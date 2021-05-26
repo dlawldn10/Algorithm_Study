@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>cc0c43c0-ff80-482b-be16-c54eaabc5758</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>module1.py</StartupFile>
+    <StartupFile>1_직사각형 별찍기.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,17 +21,23 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="module2.py">
+    <Compile Include="2_x만큼 간격이 있는 n개의 숫자.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="module1.py" />
-    <Compile Include="module3.py">
+    <Compile Include="1_직사각형 별찍기.py" />
+    <Compile Include="3_행렬의 덧셈.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="module4.py">
+    <Compile Include="4_핸드폰 번호 가리기.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="module5.py">
+    <Compile Include="5_하샤드수.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="6_평균구하기.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="7_콜라츠 추측.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
