@@ -110,93 +110,93 @@
     
 
 
-#각각의 집에서 모든 치킨집에 대하여 거리를 구한 후 그 거리들을 저장한다.
-#그 후 조합 사용해서 합이 최소가 되는 조합을 찾는다.
-#완탐/조합!
-from itertools import combinations
+# #각각의 집에서 모든 치킨집에 대하여 거리를 구한 후 그 거리들을 저장한다.
+# #그 후 조합 사용해서 합이 최소가 되는 조합을 찾는다.
+# #완탐/조합!
+# from itertools import combinations
 
-N, M = map(int, input().split())
+# N, M = map(int, input().split())
 
-houses = []
-chickens = []
-for i in range(N):
-    for j,v in enumerate(map(int, input().split())):
-        if v == 1:
-            houses.append((i,j))
-        elif v == 2:
-            chickens.append((i,j))
-
-
-def get_dist(a, b):
-    return abs(a[0] - b[0]) + abs(a[1] - b[1])
-
-#상한 생각하기
-ans = len(houses) * 2 * N
-for combi in combinations(chickens, M):
-    tot = 0
-    for house in houses:
-        tot += min(get_dist(house, chicken) for chicken in combi)
-
-    if ans > tot:
-        ans = tot
-
-print(ans)
+# houses = []
+# chickens = []
+# for i in range(N):
+#     for j,v in enumerate(map(int, input().split())):
+#         if v == 1:
+#             houses.append((i,j))
+#         elif v == 2:
+#             chickens.append((i,j))
 
 
+# def get_dist(a, b):
+#     return abs(a[0] - b[0]) + abs(a[1] - b[1])
+
+# #상한 생각하기
+# ans = len(houses) * 2 * N
+# for combi in combinations(chickens, M):
+#     tot = 0
+#     for house in houses:
+#         tot += min(get_dist(house, chicken) for chicken in combi)
+
+#     if ans > tot:
+#         ans = tot
+
+# print(ans)
 
 
-#최소한의 동작으로 도착지점까지 가야되므로 bfs
-#최소한의 동작으로 가려면 말의 움직임을 최대한 사용해서 가면 됨.
-
-#말의 움직임을 최대한 사용해서 bfs를 이용해서 풀면 될것 같음.
-#말의 움직임을 사용할 순서는? -> 3차원으로 만들어서 능력을 사용한 횟수를 저장한다.
-
-from collections import deque
-
-dy = (0,1,0,-1, -2,-1,1,2,2,1,-1,-2)
-dx = (1,0,-1,0, 1)
-
-K = int(input())
-W, H = map(int, input().split())
-
-board = [input().split() for _ in range(H)]
-
-def is_valid_coord(a, b):
 
 
-def bfs():
-    chk =[[[False]*(K+1) for _ in range(W)] for _ in range(H)]
-    chk[0][0][0] = True
-    dq = deque()
-    dq.append((0,0,0,0))
-    while dq:
-        y, x, k, d = dq.popleft()
-        if y==H-1 and x == W-1:
-            return d
+# #최소한의 동작으로 도착지점까지 가야되므로 bfs
+# #최소한의 동작으로 가려면 말의 움직임을 최대한 사용해서 가면 됨.
 
-        nd = d +1
-        nk = k
-        for i in range(4):
-            ny = y + dy[i]
-            nx = x + dx[i]
-            if is_valid_coord(ny, nx) and board[ny][nx] == '0' and not chk[ny][nx][nk]:
-                chk[ny][nx][nk] = True
-                dq.append((ny,nx,nk,nd))
+# #말의 움직임을 최대한 사용해서 bfs를 이용해서 풀면 될것 같음.
+# #말의 움직임을 사용할 순서는? -> 3차원으로 만들어서 능력을 사용한 횟수를 저장한다.
 
+# from collections import deque
 
-            if k < K:
-                nk = k + 1
-                for i in range(4, 12):
-                    ny = y + dy[i]
-                    nx = x + dx[i]
-                    if is_valid_coord(ny, nx) and board[ny][nx] == '0' and not chk[ny][nx][nk]:
-                        chk[ny][nx][nk] = True
-                        dq.append((ny,nx,nk,nd))
+# dy = (0,1,0,-1, -2,-1,1,2,2,1,-1,-2)
+# dx = (1,0,-1,0, 1)
 
-    return -1
+# K = int(input())
+# W, H = map(int, input().split())
+
+# board = [input().split() for _ in range(H)]
+
+# def is_valid_coord(a, b):
 
 
-print(bfs())
+# def bfs():
+#     chk =[[[False]*(K+1) for _ in range(W)] for _ in range(H)]
+#     chk[0][0][0] = True
+#     dq = deque()
+#     dq.append((0,0,0,0))
+#     while dq:
+#         y, x, k, d = dq.popleft()
+#         if y==H-1 and x == W-1:
+#             return d
+
+#         nd = d +1
+#         nk = k
+#         for i in range(4):
+#             ny = y + dy[i]
+#             nx = x + dx[i]
+#             if is_valid_coord(ny, nx) and board[ny][nx] == '0' and not chk[ny][nx][nk]:
+#                 chk[ny][nx][nk] = True
+#                 dq.append((ny,nx,nk,nd))
+
+
+#             if k < K:
+#                 nk = k + 1
+#                 for i in range(4, 12):
+#                     ny = y + dy[i]
+#                     nx = x + dx[i]
+#                     if is_valid_coord(ny, nx) and board[ny][nx] == '0' and not chk[ny][nx][nk]:
+#                         chk[ny][nx][nk] = True
+#                         dq.append((ny,nx,nk,nd))
+
+#     return -1
+
+
+# print(bfs())
 
 
 

@@ -189,10 +189,10 @@
 # a = int(sys.stdin.readline())
 
 #정해진 갯수의 정수를 한줄에 입력받을 때
-# a,b,c = map(int,sys.stdin.readline().split())
+# a,b,c = map(int, sys.stdin.readline().split())
 
 #임의의 갯수의 정수를 한줄에 입력받을 때
-# data = list(map(int,sys.stdin.readline().split()))
+# data = list(map(int, sys.stdin.readline().split()))
 
 #임의의 갯수의 정수를 n줄 입력받아 2차원 리스트에 저장할때
 # import sys
