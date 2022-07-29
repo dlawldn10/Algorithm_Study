@@ -114,4 +114,41 @@
 # print(arr[0])
 
 
-#
+#취코테 0728
+# #7785
+
+# # import sys
+# # input = sys.stdin.readline
+# s = set()
+
+# for _ in range(int(input())):
+#     name, el = input().split()
+#     if el == 'enter':
+#         s.add(name)
+#     else:
+#         if name in s:
+#             s.remove(name)
+
+# for name in sorted(s, reverse=True):
+#     print(name)
+
+
+#5397
+
+
+for _ in range(int(input())):
+    keystr = list(map(str, input()))
+    stk1 = []
+    stk2 = []
+    for c in keystr:
+        if c == '<' and len(stk1) > 0:
+            stk2.append(stk1.pop())
+        elif c == '>' and len(stk2) > 0:
+            stk1.append(stk2.pop())
+        elif c == '-'and len(stk1) > 0:
+            stk1.pop()
+        elif c.isalpha() or c.isdigit():
+            stk1.append(c)
+
+    keystr.clear()
+    print(''.join(stk1))
