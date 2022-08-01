@@ -133,22 +133,117 @@
 #     print(name)
 
 
-#5397
+# #5397
+
+# #스택 사용
+# for _ in range(int(input())):
+#     keystr = list(map(str, input()))
+#     stk1 = []
+#     stk2 = []
+#     for c in keystr:
+#         if c == '<' and len(stk1) > 0:
+#             stk2.append(stk1.pop())
+#         elif c == '>' and len(stk2) > 0:
+#             stk1.append(stk2.pop())
+#         elif c == '-'and len(stk1) > 0:
+#             stk1.pop()
+#         elif c.isalpha() or c.isdigit():
+#             stk1.append(c)
+
+#     keystr.clear()
+#     print(''.join(stk1) + ''.join(reversed(stk2)))
+
+#
 
 
-for _ in range(int(input())):
-    keystr = list(map(str, input()))
-    stk1 = []
-    stk2 = []
-    for c in keystr:
-        if c == '<' and len(stk1) > 0:
-            stk2.append(stk1.pop())
-        elif c == '>' and len(stk2) > 0:
-            stk1.append(stk2.pop())
-        elif c == '-'and len(stk1) > 0:
-            stk1.pop()
-        elif c.isalpha() or c.isdigit():
-            stk1.append(c)
+# #1935
+# # -> 아스키 코드 사용부분, 소숫점 둘째자리 표현하는 프린트 부분
+# N = int(input())
+# postStr = input()
+# stk = []
+# val = []
+# for _ in range(N):
+#     val.append(int(input()))
 
-    keystr.clear()
-    print(''.join(stk1))
+# for c in postStr:
+#     if c.isalpha():
+#         c = val[ord(c) - ord('A')]
+#         stk.append(c)
+#     else:
+#         a = stk.pop()
+#         b = stk.pop()
+#         if c == '+':
+#             stk.append(b+a)
+#         elif c == '-':
+#             stk.append(b-a)
+#         elif c == '/':
+#             stk.append(b/a)
+#         elif c == '*':
+#             stk.append(b*a)
+        
+# print(f'{stk[0]:.2f}')
+
+
+# #2075
+# import heapq
+# hq = []
+# N = int(input())
+# for _ in range(N):
+#     for i in map(int, input().split()):
+#         if len(hq) >= N:
+#             heapq.heappushpop(hq, i)
+#         else:
+#             heapq.heappush(hq, i)
+
+# print(heapq.heappop(hq))
+
+
+# # 완전 탐색: 부르트포스. 모든 경우의 수를 탐색하는 방법.
+# # 반복문, 재귀, 순열과 조합 사용.
+
+# #순열: n개의 수 중에서 r개를 뽑아 줄을 세우는 경우의 수
+# # = 한 리스트 안에서 r개를 뽑아 줄을 세우는 경우의 수. 순서도 고려.
+# from itertools import permutations
+# arr = [0,1,2,3]
+# for i in permutations(arr, 4):
+#     print(i)
+
+# #조합: n개의 수 중에서 r개를 뽑는 경우의 수. 순서 상관x.
+# # = 한 리스트 안에서 r개를 뽑는 경우의 수.
+# from itertools import combinations
+# arr = [0,1,2,3]
+# for i in combinations(arr, 2):
+#     print(i)
+
+# #3040
+# from itertools import combinations
+# arr = [int(input()) for i in range(9)]
+
+# for i in combinations(arr, 7):
+#     if sum(i) == 100:
+#         for j in i:
+#             print(j)
+#         break
+
+#10448
+def is_possible(T):
+    for j in range(0, i):
+        for k in range(j, i):
+            for l in range(k, i):
+                if arr[j] + arr[k] + arr[l] == num:
+                    return 1
+    return 0
+    
+T = int(input())
+for _ in range(T):
+    arr = []
+    num = int(input())
+    i = 0
+    while i*(i+1)//2 <= num:
+        i+=1
+        arr.append(i*(i+1)//2)
+    
+    print(is_possible(T))
+    
+
+    
