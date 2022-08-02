@@ -225,25 +225,85 @@
 #             print(j)
 #         break
 
-#10448
-def is_possible(T):
-    for j in range(0, i):
-        for k in range(j, i):
-            for l in range(k, i):
-                if arr[j] + arr[k] + arr[l] == num:
-                    return 1
-    return 0
+# #10448
+# def is_possible(T):
+#     for j in range(0, i):
+#         for k in range(j, i):
+#             for l in range(k, i):
+#                 if arr[j] + arr[k] + arr[l] == num:
+#                     return 1
+#     return 0
     
-T = int(input())
-for _ in range(T):
-    arr = []
-    num = int(input())
-    i = 0
-    while i*(i+1)//2 <= num:
-        i+=1
-        arr.append(i*(i+1)//2)
+# T = int(input())
+# for _ in range(T):
+#     arr = []
+#     num = int(input())
+#     i = 0
+#     while i*(i+1)//2 <= num:
+#         i+=1
+#         arr.append(i*(i+1)//2)
     
-    print(is_possible(T))
+#     print(is_possible(T))
+
+
+#3085
+N = int(input())
+board = [list(input()) for _ in range(N)]
+ans = 1
+
+#연속된 노드 세는 부분
+def search():
+    global ans
+    for i in range(N):
+        cnt = 1
+        for j in range(1, N):
+            
+            if board[i][j] == board[i][j-1]:
+                cnt += 1
+                ans = max(ans, cnt)
+            else:
+                cnt = 1
+        
+    for j in range(N):
+        cnt = 1
+        for i in range(1, N):
+            
+            if board[i][j] == board[i-1][j]:
+                cnt += 1
+                ans = max(ans, cnt)
+            else:
+                cnt = 1
+
+
+
+#두 노드 교환 부분
+#오른쪽 / 아래
+#인덱스 범위 주의
+for i in range(N):
+    for j in range(N):
+        if j+1 < N:
+            #두 노드 교환
+            board[i][j], board[i][j+1] = board[i][j+1], board[i][j]
+
+            #연속된 노드 세주고
+            search()
+
+            #원상복귀
+            board[i][j], board[i][j+1] = board[i][j+1], board[i][j]
+        
+        if i+1 < N:
+            #두 노드 교환
+            board[i][j], board[i+1][j] = board[i+1][j], board[i][j]
+
+            #연속된 노드 세주고
+            search()
+
+            #원상복귀
+            board[i][j], board[i+1][j] = board[i+1][j], board[i][j]
+
+
+print(ans)
+
     
 
     
