@@ -246,64 +246,84 @@
 #     print(is_possible(T))
 
 
-#3085
-N = int(input())
-board = [list(input()) for _ in range(N)]
-ans = 1
+# #3085
+# N = int(input())
+# board = [list(input()) for _ in range(N)]
+# ans = 1
 
-#연속된 노드 세는 부분
-def search():
-    global ans
-    for i in range(N):
-        cnt = 1
-        for j in range(1, N):
+# #연속된 노드 세는 부분
+# def search():
+#     global ans
+#     for i in range(N):
+#         cnt = 1
+#         for j in range(1, N):
             
-            if board[i][j] == board[i][j-1]:
-                cnt += 1
-                ans = max(ans, cnt)
-            else:
-                cnt = 1
+#             if board[i][j] == board[i][j-1]:
+#                 cnt += 1
+#                 ans = max(ans, cnt)
+#             else:
+#                 cnt = 1
         
-    for j in range(N):
-        cnt = 1
-        for i in range(1, N):
+#     for j in range(N):
+#         cnt = 1
+#         for i in range(1, N):
             
-            if board[i][j] == board[i-1][j]:
-                cnt += 1
-                ans = max(ans, cnt)
-            else:
-                cnt = 1
+#             if board[i][j] == board[i-1][j]:
+#                 cnt += 1
+#                 ans = max(ans, cnt)
+#             else:
+#                 cnt = 1
 
 
 
-#두 노드 교환 부분
-#오른쪽 / 아래
-#인덱스 범위 주의
-for i in range(N):
-    for j in range(N):
-        if j+1 < N:
-            #두 노드 교환
-            board[i][j], board[i][j+1] = board[i][j+1], board[i][j]
+# #두 노드 교환 부분
+# #오른쪽 / 아래
+# #인덱스 범위 주의
+# for i in range(N):
+#     for j in range(N):
+#         if j+1 < N:
+#             #두 노드 교환
+#             board[i][j], board[i][j+1] = board[i][j+1], board[i][j]
 
-            #연속된 노드 세주고
-            search()
+#             #연속된 노드 세주고
+#             search()
 
-            #원상복귀
-            board[i][j], board[i][j+1] = board[i][j+1], board[i][j]
+#             #원상복귀
+#             board[i][j], board[i][j+1] = board[i][j+1], board[i][j]
         
-        if i+1 < N:
-            #두 노드 교환
-            board[i][j], board[i+1][j] = board[i+1][j], board[i][j]
+#         if i+1 < N:
+#             #두 노드 교환
+#             board[i][j], board[i+1][j] = board[i+1][j], board[i][j]
 
-            #연속된 노드 세주고
-            search()
+#             #연속된 노드 세주고
+#             search()
 
-            #원상복귀
-            board[i][j], board[i+1][j] = board[i+1][j], board[i][j]
+#             #원상복귀
+#             board[i][j], board[i+1][j] = board[i+1][j], board[i][j]
 
+
+# print(ans)
+
+
+#1931
+import sys
+
+input = sys.stdin.readline
+meetings = []
+for _ in range(int(input())):
+    start, end = map(int, input().split())
+    meetings.append((end, start))
+
+#종료시간 순으로 정렬
+meetings.sort()
+t = 0
+ans = 0
+for end, start in meetings:
+    if t <= start:
+        t = end
+        ans += 1
 
 print(ans)
 
-    
 
     
