@@ -305,25 +305,48 @@
 # print(ans)
 
 
-#1931
-import sys
+# #1931
+# import sys
 
-input = sys.stdin.readline
-meetings = []
-for _ in range(int(input())):
-    start, end = map(int, input().split())
-    meetings.append((end, start))
+# input = sys.stdin.readline
+# meetings = []
+# for _ in range(int(input())):
+#     start, end = map(int, input().split())
+#     meetings.append((end, start))
 
-#종료시간 순으로 정렬
-meetings.sort()
-t = 0
+# #종료시간 순으로 정렬
+# meetings.sort()
+# t = 0
+# ans = 0
+# for end, start in meetings:
+#     if t <= start:
+#         t = end
+#         ans += 1
+
+# print(ans)
+
+
+#1449
+N, L = map(int, input().split())
+ary = list(map(int, input().split()))
+ary.sort()
+inter = []
+for i in range(len(ary)-1):
+    inter.append(ary[i+1]-ary[i])
+
+cnt = 0
 ans = 0
-for end, start in meetings:
-    if t <= start:
-        t = end
+
+for v in inter:
+    if cnt + v <= L-1:
+        cnt += v
+    else:
+        cnt = 0
         ans += 1
 
-print(ans)
+
+print(ans+1)
+
 
 
     
