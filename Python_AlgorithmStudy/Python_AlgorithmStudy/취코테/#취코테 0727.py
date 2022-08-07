@@ -348,34 +348,67 @@
 # print(ans+1)
 
 
-#11724
-import sys
-sys.setrecursionlimit(10**6)
-input = sys.stdin.readline
+# #11724
+# import sys
+# sys.setrecursionlimit(10**6)
+# input = sys.stdin.readline
+# N, M = map(int, input().split())
+# adj = [[False]*(N+1) for _ in range(N+1)]
+# for _ in range(M):
+#     u, v = map(int, input().split())
+#     adj[u][v] = True
+#     adj[v][u] = True
+
+# print(adj)
+# ans = 0
+# chk = [False]*(N+1)
+
+# def dfs(i):
+#     for j in range(1, N+1):
+#         if adj[i][j] == True and chk[j] == False:
+#             chk[j] = True
+#             dfs(j)
+
+# for i in range(1, N+1):
+#     if chk[i] == False:
+#         ans += 1
+#         chk[i] = True
+#         dfs(i)
+
+
+# print(ans)
+# print(chk)
+
+
+#2178
+from collections import deque
+
+dy = (0, 1, 0, -1)
+dx = (1, 0, -1, 0)
+
 N, M = map(int, input().split())
-adj = [[False]*(N+1) for _ in range(N+1)]
-for _ in range(M):
-    u, v = map(int, input().split())
-    adj[u][v] = True
-    adj[v][u] = True
 
-ans = 0
-chk = [False]*(N+1)
+board = [input() for _ in range(N)]
+chk = [[False]*M for _ in range(N)]
 
-def dfs(i):
-    for j in range(1, N+1):
-        if adj[i][j] == True and chk[j] == False:
-            chk[j] = True
-            dfs(j)
+dq = deque()
+dq.append((0,0,1))
+chk[0][0] = True
 
-for i in range(1, N+1):
-    if chk[i] == False:
-        ans += 1
-        chk[i] = True
-        dfs(i)
+def is_valid_coord(y, x):
+    return 0<=y<N and 0<=x<M
 
+while len(dq)>0:
+    y, x, d = dq.popleft()
+    if y == N-1 and x == M-1:
+        print(d)
+        break
 
-print(ans)
+    for i in range(4):
+        ny = y + dy[i]
+        nx = x + dx[i]
+        nd = d + 1
 
-
-    
+        if is_valid_coord(ny,nx) and not chk[ny][nx] and board[ny][nx] == '1':
+            chk[ny][nx] = True
+            dq.append([ny, nx, nd])
