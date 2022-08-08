@@ -380,35 +380,75 @@
 # print(chk)
 
 
-#2178
+# #2178
+# from collections import deque
+
+# dy = (0, 1, 0, -1)
+# dx = (1, 0, -1, 0)
+
+# N, M = map(int, input().split())
+
+# board = [input() for _ in range(N)]
+# chk = [[False]*M for _ in range(N)]
+
+# dq = deque()
+# dq.append((0,0,1))
+# chk[0][0] = True
+
+# def is_valid_coord(y, x):
+#     return 0<=y<N and 0<=x<M
+
+# while len(dq)>0:
+#     y, x, d = dq.popleft()
+#     if y == N-1 and x == M-1:
+#         print(d)
+#         break
+
+#     for i in range(4):
+#         ny = y + dy[i]
+#         nx = x + dx[i]
+#         nd = d + 1
+
+#         if is_valid_coord(ny,nx) and not chk[ny][nx] and board[ny][nx] == '1':
+#             chk[ny][nx] = True
+#             dq.append([ny, nx, nd])
+
+
+#1987
 from collections import deque
 
 dy = (0, 1, 0, -1)
 dx = (1, 0, -1, 0)
 
-N, M = map(int, input().split())
+R, C = map(int,input().split())
+board = [input() for _ in range(R)]
 
-board = [input() for _ in range(N)]
-chk = [[False]*M for _ in range(N)]
+#백트래킹을 위한 chk.
+#set을 C*R개 만든다.
+chk = [[set() for _ in range(C)] for _ in range(R)]
+# print(chk)
 
 dq = deque()
-dq.append((0,0,1))
-chk[0][0] = True
+dq.append((0,0, board[0][0]))
+chk[0][0].add(board[0][0])
+ans = 0
 
 def is_valid_coord(y, x):
-    return 0<=y<N and 0<=x<M
+    return 0<=y<R and 0<=x<C
 
-while len(dq)>0:
-    y, x, d = dq.popleft()
-    if y == N-1 and x == M-1:
-        print(d)
-        break
+while dq:
+    y, x, s = dq.popleft()
+    ans = max(ans, len(s))
 
     for i in range(4):
         ny = y + dy[i]
         nx = x + dx[i]
-        nd = d + 1
+        if is_valid_coord(ny, nx) and board[ny][nx] not in s:
+            ns = s + board[ny][nx]
+            #경로에 있는 알파벳이 같은 경우를 제외시킨다.
+            if ns not in chk[ny][nx]:
+                chk[ny][nx].add(ns)
+                dq.append((ny, nx, ns))
 
-        if is_valid_coord(ny,nx) and not chk[ny][nx] and board[ny][nx] == '1':
-            chk[ny][nx] = True
-            dq.append([ny, nx, nd])
+print(ans)
+
