@@ -414,41 +414,97 @@
 #             dq.append([ny, nx, nd])
 
 
-#1987
+# #1987
+# from collections import deque
+
+# dy = (0, 1, 0, -1)
+# dx = (1, 0, -1, 0)
+
+# R, C = map(int,input().split())
+# board = [input() for _ in range(R)]
+
+# #백트래킹을 위한 chk.
+# #set을 C*R개 만든다.
+# chk = [[set() for _ in range(C)] for _ in range(R)]
+# # print(chk)
+
+# dq = deque()
+# dq.append((0,0, board[0][0]))
+# chk[0][0].add(board[0][0])
+# ans = 0
+
+# def is_valid_coord(y, x):
+#     return 0<=y<R and 0<=x<C
+
+# while dq:
+#     y, x, s = dq.popleft()
+#     ans = max(ans, len(s))
+
+#     for i in range(4):
+#         ny = y + dy[i]
+#         nx = x + dx[i]
+#         if is_valid_coord(ny, nx) and board[ny][nx] not in s:
+#             ns = s + board[ny][nx]
+#             #경로에 있는 알파벳이 같은 경우를 제외시킨다.
+#             if ns not in chk[ny][nx]:
+#                 chk[ny][nx].add(ns)
+#                 dq.append((ny, nx, ns))
+
+# print(ans)
+
+
+#1743
 from collections import deque
+import sys
+
+input = sys.stdin.readline
 
 dy = (0, 1, 0, -1)
 dx = (1, 0, -1, 0)
 
-R, C = map(int,input().split())
-board = [input() for _ in range(R)]
+N, M, K = map(int, input().split())
+board = [['.']*M for _ in range(N)]
+# print(board)
+chk = [[False]*M for _ in range(N)]
+for _ in range(K):
+    y, x = map(int, input().split())
+    board[y-1][x-1] = '#'
 
-#백트래킹을 위한 chk.
-#set을 C*R개 만든다.
-chk = [[set() for _ in range(C)] for _ in range(R)]
-# print(chk)
-
-dq = deque()
-dq.append((0,0, board[0][0]))
-chk[0][0].add(board[0][0])
+# print(board)
 ans = 0
 
+
 def is_valid_coord(y, x):
-    return 0<=y<R and 0<=x<C
+    return 0<=y<N and 0<=x<M
 
-while dq:
-    y, x, s = dq.popleft()
-    ans = max(ans, len(s))
+def bfs(y, x):
+    dq = deque()
+    dq.append((y,x))
+    chk[y][x] = True
+    sz = 1
 
-    for i in range(4):
-        ny = y + dy[i]
-        nx = x + dx[i]
-        if is_valid_coord(ny, nx) and board[ny][nx] not in s:
-            ns = s + board[ny][nx]
-            #경로에 있는 알파벳이 같은 경우를 제외시킨다.
-            if ns not in chk[ny][nx]:
-                chk[ny][nx].add(ns)
-                dq.append((ny, nx, ns))
+    while dq:
+        y, x = dq.popleft()
+        # print(ans)
+
+        for i in range(4):
+            ny = y + dy[i]
+            nx = x + dx[i]
+
+            if is_valid_coord(ny, nx):
+
+                if board[ny][nx] == '#' and not chk[ny][nx]:
+                    sz = sz + 1
+                    dq.append((ny, nx))
+                    chk[ny][nx] = True
+                
+        
+    return (1 if sz == 0 else sz)
+
+        
+for i in range(N):
+    for j in range(M):
+        if board[i][j] == '#' and not chk[i][j]:
+            ans = max(ans, bfs(i, j))
 
 print(ans)
-
