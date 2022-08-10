@@ -453,58 +453,94 @@
 # print(ans)
 
 
-#1743
-from collections import deque
-import sys
+# #1743
+# from collections import deque
+# import sys
 
-input = sys.stdin.readline
+# input = sys.stdin.readline
 
-dy = (0, 1, 0, -1)
-dx = (1, 0, -1, 0)
+# dy = (0, 1, 0, -1)
+# dx = (1, 0, -1, 0)
 
-N, M, K = map(int, input().split())
-board = [['.']*M for _ in range(N)]
-# print(board)
-chk = [[False]*M for _ in range(N)]
-for _ in range(K):
-    y, x = map(int, input().split())
-    board[y-1][x-1] = '#'
+# N, M, K = map(int, input().split())
+# board = [['.']*M for _ in range(N)]
+# chk = [[False]*M for _ in range(N)]
+# for _ in range(K):
+#     y, x = map(int, input().split())
+#     board[y-1][x-1] = '#'
 
-# print(board)
-ans = 0
+# ans = 0
 
 
-def is_valid_coord(y, x):
-    return 0<=y<N and 0<=x<M
+# def is_valid_coord(y, x):
+#     return 0<=y<N and 0<=x<M
 
-def bfs(y, x):
-    dq = deque()
-    dq.append((y,x))
-    chk[y][x] = True
-    sz = 1
+# def bfs(y, x):
+#     dq = deque()
+#     dq.append((y,x))
+#     chk[y][x] = True
+#     sz = 1
 
-    while dq:
-        y, x = dq.popleft()
-        # print(ans)
+#     while dq:
+#         y, x = dq.popleft()
+#         # print(ans)
 
-        for i in range(4):
-            ny = y + dy[i]
-            nx = x + dx[i]
+#         for i in range(4):
+#             ny = y + dy[i]
+#             nx = x + dx[i]
 
-            if is_valid_coord(ny, nx):
+#             if is_valid_coord(ny, nx):
 
-                if board[ny][nx] == '#' and not chk[ny][nx]:
-                    sz = sz + 1
-                    dq.append((ny, nx))
-                    chk[ny][nx] = True
+#                 if board[ny][nx] == '#' and not chk[ny][nx]:
+#                     sz = sz + 1
+#                     dq.append((ny, nx))
+#                     chk[ny][nx] = True
                 
         
-    return (1 if sz == 0 else sz)
+#     return (1 if sz == 0 else sz)
 
         
-for i in range(N):
-    for j in range(M):
-        if board[i][j] == '#' and not chk[i][j]:
-            ans = max(ans, bfs(i, j))
+# for i in range(N):
+#     for j in range(M):
+#         if board[i][j] == '#' and not chk[i][j]:
+#             ans = max(ans, bfs(i, j))
 
-print(ans)
+# print(ans)
+
+
+#7562
+from collections import deque
+
+dy = (2,1,2,1,-2,-1,-2,-1)
+dx = (1,2,-1,-2,-1,-2,1,2)
+
+T = int(input())
+for _ in range(T):
+    N = int(input())
+    board = [[0]*N for _ in range(N)]
+
+    start_y, start_x = map(int, input().split())
+    board[start_y][start_x] = 1
+    end_y, end_x = map(int, input().split())
+
+    dq = deque()
+    dq.append((start_y, start_x, 0))
+
+    def is_valid_coord(y, x):
+        return 0<=y<N and 0<=x<N
+
+    while dq:
+        y, x, d = dq.popleft()
+        
+
+        if y == end_y and x == end_x:
+            print(d)
+            break
+
+        for i in range(8):
+            ny = y + dy[i]
+            nx = x + dx[i]
+            nd = d + 1
+            if is_valid_coord(ny, nx) and board[ny][nx] == 0:
+                board[ny][nx] = 1
+                dq.append((ny, nx, nd))
