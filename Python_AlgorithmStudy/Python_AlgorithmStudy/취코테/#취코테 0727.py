@@ -508,39 +508,125 @@
 # print(ans)
 
 
-#7562
-from collections import deque
+# #7562
+# from collections import deque
 
-dy = (2,1,2,1,-2,-1,-2,-1)
-dx = (1,2,-1,-2,-1,-2,1,2)
+# dy = (2,1,2,1,-2,-1,-2,-1)
+# dx = (1,2,-1,-2,-1,-2,1,2)
 
-T = int(input())
-for _ in range(T):
-    N = int(input())
-    board = [[0]*N for _ in range(N)]
+# T = int(input())
+# for _ in range(T):
+#     N = int(input())
+#     board = [[0]*N for _ in range(N)]
 
-    start_y, start_x = map(int, input().split())
-    board[start_y][start_x] = 1
-    end_y, end_x = map(int, input().split())
+#     start_y, start_x = map(int, input().split())
+#     board[start_y][start_x] = 1
+#     end_y, end_x = map(int, input().split())
 
-    dq = deque()
-    dq.append((start_y, start_x, 0))
+#     dq = deque()
+#     dq.append((start_y, start_x, 0))
 
-    def is_valid_coord(y, x):
-        return 0<=y<N and 0<=x<N
+#     def is_valid_coord(y, x):
+#         return 0<=y<N and 0<=x<N
 
-    while dq:
-        y, x, d = dq.popleft()
+#     while dq:
+#         y, x, d = dq.popleft()
         
 
-        if y == end_y and x == end_x:
-            print(d)
+#         if y == end_y and x == end_x:
+#             print(d)
+#             break
+
+#         for i in range(8):
+#             ny = y + dy[i]
+#             nx = x + dx[i]
+#             nd = d + 1
+#             if is_valid_coord(ny, nx) and board[ny][nx] == 0:
+#                 board[ny][nx] = 1
+#                 dq.append((ny, nx, nd))
+
+
+#9663
+from pprint import pprint
+dy = (0,1,0,-1,1,1,-1,-1)
+dx = (1,0,-1,0,1,-1,1,-1)
+
+N = int(input())
+
+board = [[0]*N for _ in range(N)]
+chk = [[False]*N for _ in range(N)]
+
+cnt = 0
+
+def is_valid_coord(y, x):
+    return 0<=y<N and 0<=x<N
+
+def dfs(y, x):
+    global cnt
+    cnt += 1
+
+    for i in range(N):
+        chk[y][i] = True
+    
+    for i in range(N):
+        chk[i][x] = True
+
+    tmp_x = x
+    tmp_y = y
+
+    while True:
+        tmp_y += 1
+        tmp_x += 1
+        if is_valid_coord(tmp_y, tmp_x):
+            chk[tmp_y][tmp_x] = True
+        else:
+            tmp_x = x
+            tmp_y = y
             break
 
-        for i in range(8):
-            ny = y + dy[i]
-            nx = x + dx[i]
-            nd = d + 1
-            if is_valid_coord(ny, nx) and board[ny][nx] == 0:
-                board[ny][nx] = 1
-                dq.append((ny, nx, nd))
+    while True:
+        tmp_y -= 1
+        tmp_x -= 1
+        if is_valid_coord(tmp_y, tmp_x):
+            chk[tmp_y][tmp_x] = True
+        else:
+            tmp_x = x
+            tmp_y = y
+            break
+
+    while True:
+        tmp_y -= 1
+        tmp_x += 1
+        if is_valid_coord(tmp_y, tmp_x):
+            chk[tmp_y][tmp_x] = True
+        else:
+            tmp_x = x
+            tmp_y = y
+            break
+
+    while True:
+        tmp_y += 1
+        tmp_x -= 1
+        if is_valid_coord(tmp_y, tmp_x):
+            chk[tmp_y][tmp_x] = True
+        else:
+            tmp_x = x
+            tmp_y = y
+            break
+
+
+    pprint(chk)
+    for j in range(8):
+        ny = y + dy[j]
+        nx = x + dx[j]
+        if is_valid_coord(ny, nx) and chk[ny][nx] == False:
+            dfs(ny, nx)
+
+
+for i in range(N):
+    for j in range(N):
+        if is_valid_coord and chk[i][j] == False:
+            
+            dfs(i, j)
+
+print(cnt)
