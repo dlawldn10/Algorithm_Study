@@ -547,86 +547,68 @@
 
 
 #9663
-from pprint import pprint
-dy = (0,1,0,-1,1,1,-1,-1)
-dx = (1,0,-1,0,1,-1,1,-1)
-
-N = int(input())
-
-board = [[0]*N for _ in range(N)]
-chk = [[False]*N for _ in range(N)]
-
-cnt = 0
-
-def is_valid_coord(y, x):
-    return 0<=y<N and 0<=x<N
-
-def dfs(y, x):
-    global cnt
-    cnt += 1
-
-    for i in range(N):
-        chk[y][i] = True
-    
-    for i in range(N):
-        chk[i][x] = True
-
-    tmp_x = x
-    tmp_y = y
-
-    while True:
-        tmp_y += 1
-        tmp_x += 1
-        if is_valid_coord(tmp_y, tmp_x):
-            chk[tmp_y][tmp_x] = True
-        else:
-            tmp_x = x
-            tmp_y = y
-            break
-
-    while True:
-        tmp_y -= 1
-        tmp_x -= 1
-        if is_valid_coord(tmp_y, tmp_x):
-            chk[tmp_y][tmp_x] = True
-        else:
-            tmp_x = x
-            tmp_y = y
-            break
-
-    while True:
-        tmp_y -= 1
-        tmp_x += 1
-        if is_valid_coord(tmp_y, tmp_x):
-            chk[tmp_y][tmp_x] = True
-        else:
-            tmp_x = x
-            tmp_y = y
-            break
-
-    while True:
-        tmp_y += 1
-        tmp_x -= 1
-        if is_valid_coord(tmp_y, tmp_x):
-            chk[tmp_y][tmp_x] = True
-        else:
-            tmp_x = x
-            tmp_y = y
-            break
+# 다시 풀어보기
 
 
-    pprint(chk)
-    for j in range(8):
-        ny = y + dy[j]
-        nx = x + dx[j]
-        if is_valid_coord(ny, nx) and chk[ny][nx] == False:
-            dfs(ny, nx)
+# # 이분탐색
+# # 3 위치 찾기
+# a = [2,3,6,6,8,12]
+# left = 0
+# right = len(a)-1
+# mid = (left + right) // 2
+
+# while left <= right:
+#     if a[mid] == 3:
+#         print(f'a[{mid}] = 3')
+#         break
+#     elif a[mid] > 3:
+#         right = mid - 1
+#     else:
+#         left = mid + 1
+
+#     mid = (left + right) // 2
 
 
-for i in range(N):
-    for j in range(N):
-        if is_valid_coord and chk[i][j] == False:
-            
-            dfs(i, j)
+# # 이분탐색 관련 라이브러리
+# from bisect import bisect_left, bisect_right
 
-print(cnt)
+# a = [2,3,6,6,6,10,12,15]
+# l = bisect_left(a, 6) # -> 가장 왼쪽 6의 인덱스를 반환, 2
+# r = bisect_right(a, 6) # -> 가장 오른쪽 6의 그 다음 인덱스를 반환, 5
+# print(l)
+# print(r)
+# print(r-l)
+# print("-----")
+# l = bisect_left(a, 10) # -> 가장 왼쪽 10의 인덱스를 반환, 5
+# r = bisect_right(a, 10) # -> 가장 오른쪽 10의 그 다음 인덱스를 반환, 6
+# print(l)
+# print(r)
+# print(r-l)
+
+
+#2805
+N, M = map(int, input().split())
+tree = list(map(int, input().split()))
+
+low = 0
+high = max(tree)
+mid = (low + high) // 2
+
+def get_total_tree(h):
+    ret = 0
+    for t in tree:
+        if t > h:
+            ret += t - h
+    return ret
+
+ans = 0
+while low <= high:
+    if get_total_tree(mid) >= M:
+        ans = mid
+        low = mid + 1
+    else:
+        high = mid - 1
+
+    mid = (low + high) // 2
+
+print(ans)
