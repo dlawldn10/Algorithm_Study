@@ -586,29 +586,62 @@
 # print(r-l)
 
 
-#2805
-N, M = map(int, input().split())
-tree = list(map(int, input().split()))
+# #2805
+# N, M = map(int, input().split())
+# tree = list(map(int, input().split()))
 
-low = 0
-high = max(tree)
-mid = (low + high) // 2
+# low = 0
+# high = max(tree)
+# mid = (low + high) // 2
 
-def get_total_tree(h):
-    ret = 0
-    for t in tree:
-        if t > h:
-            ret += t - h
-    return ret
+# def get_total_tree(h):
+#     ret = 0
+#     for t in tree:
+#         if t > h:
+#             ret += t - h
+#     return ret
 
-ans = 0
-while low <= high:
-    if get_total_tree(mid) >= M:
-        ans = mid
-        low = mid + 1
-    else:
-        high = mid - 1
+# ans = 0
+# while low <= high:
+#     if get_total_tree(mid) >= M:
+#         ans = mid
+#         low = mid + 1
+#     else:
+#         high = mid - 1
 
-    mid = (low + high) // 2
+#     mid = (low + high) // 2
 
-print(ans)
+# print(ans)
+
+
+# # 10816
+# # # 1. 라이브러리 이용하는 방법
+# # from bisect import bisect_left, bisect_right
+
+# # N = int(input())
+# # cards = sorted(list(map(int, input().split())))
+# # M = int(input())
+# # ans = []
+# # for i in map(int,input().split()):
+# #     ans.append(bisect_right(cards, i) - bisect_left(cards, i))
+
+# # print(' '.join(map(str, ans)))
+
+# # # 2. 자료구조(딕셔너리) 이용하는 방법
+# # N = int(input())
+# # cards = {}
+# # for num in map(int,input().split()):
+# #     if num in cards:
+# #         cards[num] += 1
+# #     else:
+# #         cards[num] = 1
+
+# # M = int(input())
+# # ans = []
+# # for i in map(int, input().split()):
+# #     if i in cards:
+# #         ans.append(cards[i])
+# #     else:
+# #         ans.append(0)
+
+# # print(' '.join(map(str, ans)))
