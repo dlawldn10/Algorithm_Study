@@ -645,3 +645,62 @@
 # #         ans.append(0)
 
 # # print(' '.join(map(str, ans)))
+
+
+
+# # 동적계획법(Dynamic Programming)
+# # 피보나치 수열 구현하기
+
+# # 1. 재귀함수만 사용하는 방법
+# def f(n):
+#     if n < 2:
+#         return n
+
+#     return f(n-1)+f(n-2)
+
+
+# # 2. 메모이제이션(Memoization) 사용하는 방법; 
+# # 한번 구한 문제의 답을 따로 저장해두고, 같은 함수가 호출되면 연산 없이 그 값을 이용하는 것. 
+# cache = [-1] * 37
+# def f(n):
+#     if cache[n] != -1:
+#         return cache[n]
+
+#     cache[n] = n if n < 2 else f(n-1)+f(n-2)
+#     return cache[n]
+# print(f(36))
+
+
+# # 3. 타뷸레이션(Tabulation) 사용하는 방법; 연산을 전부 먼저 시행하여 결과값들을 저장해두고 필요한 결과를 가져가기.
+# fibo = [-1] * 37
+# def f(n):
+#     for i in range(n):
+#         fibo[i] = i if i < 2 else fibo[i-1]+fibo[i-2]
+# print(f(36))
+
+
+#1463
+import sys
+sys.setrecursionlimit(10**6)
+
+N = int(input())
+INF = 987654321
+cache = [INF] * (N+1)
+cache[1] = 0
+
+def dp(x):
+    if cache[x] != INF:
+        return cache[x]
+
+    if x % 6 == 0:
+        cache[x] = min(dp(x//3), dp(x//2)) + 1
+    elif x % 3 == 0:
+        cache[x] = min(dp(x//3), dp(x-1)) + 1
+    elif x % 2 == 0:
+        cache[x] = min(dp(x//2), dp(x-1)) + 1
+    else:
+        cache[x] = dp(x-1) + 1 
+
+    return cache[x]
+
+print(dp(N))
