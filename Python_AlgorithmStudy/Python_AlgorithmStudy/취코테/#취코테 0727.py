@@ -679,28 +679,78 @@
 # print(f(36))
 
 
-#1463
+# #1463
+# # import sys
+# # sys.setrecursionlimit(10**6)
+
+# # N = int(input())
+# # INF = 987654321
+# # cache = [INF] * (N+1)
+# # cache[1] = 0
+
+# # def dp(x):
+# #     if cache[x] != INF:
+# #         return cache[x]
+
+# #     if x % 6 == 0:
+# #         cache[x] = min(dp(x//3), dp(x//2)) + 1
+# #     elif x % 3 == 0:
+# #         cache[x] = min(dp(x//3), dp(x-1)) + 1
+# #     elif x % 2 == 0:
+# #         cache[x] = min(dp(x//2), dp(x-1)) + 1
+# #     else:
+# #         cache[x] = dp(x-1) + 1 
+
+# #     return cache[x]
+
+# # print(dp(N))
+
+# # BFS로 풀어보기
+# from collections import deque
+
+# N = int(input())
+# chk = [False] * (N+1)
+# chk[N] = True
+# dq = deque()
+# dq.append((N, 0))
+
+# while dq:
+#     x, d = dq.popleft()
+#     if x == 1:
+#         print(d)
+#         break
+
+#     if x % 3 == 0 and not chk[x//3]:
+#         dq.append((x//3, d+1))
+#         chk[x//3] = True
+
+#     if x % 2 == 0 and not chk[x//2]:
+#         dq.append((x//2, d+1))
+#         chk[x//2] = True
+
+#     if not chk[x-1]:
+#         dq.append((x-1, d+1))
+#         chk[x-1] = True
+
+
+#11726
+# dp -> 가짓수를 나누고 점화식을 구한다.
+# 메모이제이션을 잊지 않는다.
 import sys
 sys.setrecursionlimit(10**6)
 
 N = int(input())
-INF = 987654321
-cache = [INF] * (N+1)
-cache[1] = 0
+cache = [0] * (N+1)
 
-def dp(x):
-    if cache[x] != INF:
-        return cache[x]
+def f(n):
+    if cache[n] != 0:
+        return cache[n]
 
-    if x % 6 == 0:
-        cache[x] = min(dp(x//3), dp(x//2)) + 1
-    elif x % 3 == 0:
-        cache[x] = min(dp(x//3), dp(x-1)) + 1
-    elif x % 2 == 0:
-        cache[x] = min(dp(x//2), dp(x-1)) + 1
+    if n <= 2:
+        cache[n] = n
     else:
-        cache[x] = dp(x-1) + 1 
+        cache[n] = (f(n-1) + f(n-2))%10007
 
-    return cache[x]
+    return cache[n]
 
-print(dp(N))
+print(f(N))
