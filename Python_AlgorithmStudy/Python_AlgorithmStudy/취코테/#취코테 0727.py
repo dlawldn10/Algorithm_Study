@@ -733,24 +733,43 @@
 #         chk[x-1] = True
 
 
-#11726
-# dp -> 가짓수를 나누고 점화식을 구한다.
-# 메모이제이션을 잊지 않는다.
-import sys
-sys.setrecursionlimit(10**6)
+# #11726
+# # dp -> 가짓수를 나누고 점화식을 구한다.
+# # 메모이제이션을 잊지 않는다.
+# import sys
+# sys.setrecursionlimit(10**6)
 
-N = int(input())
-cache = [0] * (N+1)
+# N = int(input())
+# cache = [0] * (N+1)
 
-def f(n):
-    if cache[n] != 0:
-        return cache[n]
+# def f(n):
+#     if cache[n] != 0:
+#         return cache[n]
 
-    if n <= 2:
-        cache[n] = n
-    else:
-        cache[n] = (f(n-1) + f(n-2))%10007
+#     if n <= 2:
+#         cache[n] = n
+#     else:
+#         cache[n] = (f(n-1) + f(n-2))%10007
 
-    return cache[n]
+#     return cache[n]
 
-print(f(N))
+# print(f(N))
+
+
+#9465
+for _ in range(int(input())):
+    n = int(input())
+    sticker = [list(map(int, input().split())) for _ in range(2)]
+    dp = [[0] * n for _ in range(2)]
+
+    for i in range(2):
+        dp[i][0] = sticker[i][0]
+        if n > 1:
+            dp[i][1] = sticker[i^1][0] + sticker[i][1]
+
+    for j in range(2, n):
+        for i in range(2):
+            dp[i][j] = max(dp[i^1][j-2], dp[i^1][j-1]) + sticker[i][j]
+
+        
+    print(max(dp[0][n-1], dp[1][n-1]))
