@@ -775,33 +775,47 @@
 #     print(max(dp[0][n-1], dp[1][n-1]))
 
 
-#2343
-N, M = map(int, input().split())
-lessons = list(map(int, input().split()))
-l = max(lessons)
-r = sum(lessons)
-m = (l+r)//2
-ans = r
+# #2343
+# N, M = map(int, input().split())
+# lessons = list(map(int, input().split()))
+# l = max(lessons)
+# r = sum(lessons)
+# m = (l+r)//2
+# ans = r
 
-def is_possible(sz):
-    cnt = 1
-    bluray = 0
-    for lesson in lessons:
-        if bluray + lesson <= sz:
-            bluray += lesson
-        else:
-            cnt += 1
-            bluray = lesson
+# def is_possible(sz):
+#     cnt = 1
+#     bluray = 0
+#     for lesson in lessons:
+#         if bluray + lesson <= sz:
+#             bluray += lesson
+#         else:
+#             cnt += 1
+#             bluray = lesson
     
-    return cnt <= M
+#     return cnt <= M
 
-while l <= r:
-    if is_possible(m):
-        ans = m
-        r = m-1
-    else:
-        l = m+1
+# while l <= r:
+#     if is_possible(m):
+#         ans = m
+#         r = m-1
+#     else:
+#         l = m+1
 
-    m = (l+r)//2
+#     m = (l+r)//2
 
-print(ans)
+# print(ans)
+
+
+# 1699
+N = int(input())
+dp = [i for i in range(N+1)]
+for i in range(4, N+1):
+    for j in range(1, i):
+        if i < j*j:
+            break
+
+        if dp[i] > dp[i-j*j] + 1:
+            dp[i] = dp[i-j*j] + 1
+
+print(dp[N])
