@@ -651,6 +651,9 @@
 # # 동적계획법(Dynamic Programming)
 # # 피보나치 수열 구현하기
 
+# # 재귀함수 사용 -> 하향식 접근(Top-down): 직관적, 코드 가독성 높음 / 스택 메모리 부하 가능성, 느림.
+# # 반복문 사용 -> 상향식 접근(Bottom-up): 빠름 / 부분 문제들의 풀이 순서 고려 필요.
+
 # # 1. 재귀함수만 사용하는 방법
 # def f(n):
 #     if n < 2:
@@ -807,15 +810,17 @@
 # print(ans)
 
 
-# 1699
-N = int(input())
-dp = [i for i in range(N+1)]
-for i in range(4, N+1):
-    for j in range(1, i):
-        if i < j*j:
-            break
+# # 1699
+# N = int(input())
+# dp = [i for i in range(N+1)]
+# for i in range(4, N+1):
+#     for j in range(1, i):
+#         if i < j*j:
+#             break
 
-        if dp[i] > dp[i-j*j] + 1:
-            dp[i] = dp[i-j*j] + 1
+#         if dp[i] > dp[i-j*j] + 1:
+#             dp[i] = dp[i-j*j] + 1
 
-print(dp[N])
+# print(dp[N])
+
+
