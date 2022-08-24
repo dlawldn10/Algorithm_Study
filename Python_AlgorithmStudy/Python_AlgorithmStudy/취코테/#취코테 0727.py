@@ -824,3 +824,20 @@
 # print(dp[N])
 
 
+#11055
+# 각 요소를 마지막 요소로 삼는 증가 부분 수열의 합을 f(x)로 삼고,
+# max(f(0), f(1), f(2), f(3)...f(n-1)) 을 구한다.
+
+N = int(input())
+A = list(map(int, input().split()))
+dp = [0]*N
+dp[0] = A[0]
+for i in range(1, N):
+    for j in range(i):
+        if A[j] < A[i]:
+            dp[i] = max(dp[i], dp[j])
+    
+    dp[i] += A[i]
+
+print(max(dp))
+
