@@ -824,20 +824,46 @@
 # print(dp[N])
 
 
-#11055
-# 각 요소를 마지막 요소로 삼는 증가 부분 수열의 합을 f(x)로 삼고,
-# max(f(0), f(1), f(2), f(3)...f(n-1)) 을 구한다.
+# #11055
+# # 각 요소를 마지막 요소로 삼는 증가 부분 수열의 합을 f(x)로 삼고,
+# # max(f(0), f(1), f(2), f(3)...f(n-1)) 을 구한다.
 
-N = int(input())
-A = list(map(int, input().split()))
-dp = [0]*N
-dp[0] = A[0]
-for i in range(1, N):
-    for j in range(i):
-        if A[j] < A[i]:
-            dp[i] = max(dp[i], dp[j])
+# N = int(input())
+# A = list(map(int, input().split()))
+# dp = [0]*N
+# dp[0] = A[0]
+# for i in range(1, N):
+#     for j in range(i):
+#         if A[j] < A[i]:
+#             dp[i] = max(dp[i], dp[j])
     
-    dp[i] += A[i]
+#     dp[i] += A[i]
 
-print(max(dp))
+# print(max(dp))
 
+
+#1018
+N, M = map(int, input().split())
+board = [input() for _ in range(N)]
+ans = N*M
+
+def fill(y, x, bw):
+    global ans
+    cnt = 0
+    for i in range(8):
+        for j in range(8):
+            if (i+j)%2:
+                if board[y+i][x+j] == bw:
+                    cnt += 1
+            else:
+                if board[y+i][x+j] != bw:
+                    cnt += 1
+
+    ans = min(ans, cnt)
+
+for y in range(N-7):
+    for x in range(M-7):
+        fill(y, x, 'B')
+        fill(y, x, 'W')
+
+print(ans)
