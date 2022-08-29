@@ -842,76 +842,99 @@
 # print(max(dp))
 
 
-#1018
-# # 완전 탐색으로 푸는 방법
+# #1018
+# # # 완전 탐색으로 푸는 방법
+# # N, M = map(int, input().split())
+# # board = [input() for _ in range(N)]
+# # ans = N*M
+
+# # def fill(y, x, bw):
+# #     global ans
+# #     cnt = 0
+# #     for i in range(8):
+# #         for j in range(8):
+# #             if (i+j)%2:
+# #                 if board[y+i][x+j] == bw:
+# #                     cnt += 1
+# #             else:
+# #                 if board[y+i][x+j] != bw:
+# #                     cnt += 1
+
+# #     ans = min(ans, cnt)
+
+# # for y in range(N-7):
+# #     for x in range(M-7):
+# #         fill(y, x, 'B')
+# #         fill(y, x, 'W')
+
+# # print(ans)
+
+
+# # DP를 이용한 방법
+# # 이해 부족.  다시 풀어보기.
 # N, M = map(int, input().split())
 # board = [input() for _ in range(N)]
 # ans = N*M
 
-# def fill(y, x, bw):
+# def make_acc(bw):
 #     global ans
-#     cnt = 0
-#     for i in range(8):
-#         for j in range(8):
-#             if (i+j)%2:
-#                 if board[y+i][x+j] == bw:
-#                     cnt += 1
-#             else:
-#                 if board[y+i][x+j] != bw:
-#                     cnt += 1
+#     acc= [[0]*M for _ in range(N)]
+#     for i in range(N):
+#         for j in range(M):
+#             if i>0:
+#                 acc[i][j] += acc[i-1][j]
 
-#     ans = min(ans, cnt)
+#             if j>0:
+#                 acc[i][j] += acc[i][j-1]
 
-# for y in range(N-7):
-#     for x in range(M-7):
-#         fill(y, x, 'B')
-#         fill(y, x, 'W')
+#             if i>0 and j>0:
+#                 acc[i][j] -= acc[i-1][j-1]
 
+#             if (i+j)%2 and board[i][j] == bw:
+#                 acc[i][j] += 1
+
+#             if (i+j)%2 == 0 and board[i][j] != bw:
+#                 acc[i][j] += 1
+
+#     for i in range(N-7):
+#         for j in range(M-7):
+#             cnt = acc[i+7][j+7]
+#             if i > 0:
+#                 cnt -= acc[i-1][j+7]
+
+#             if j>0:
+#                 cnt -= acc[i+7][j-1]
+
+#             if i>0 and j>0:
+#                 cnt += acc[i-1][j-1]
+
+#             ans = min(ans, cnt)
+
+
+# make_acc('B')
+# make_acc('W')
 # print(ans)
 
 
-# DP를 이용한 방법
-# 이해 부족.  다시 풀어보기.
-N, M = map(int, input().split())
-board = [input() for _ in range(N)]
-ans = N*M
+# 2841
+import sys
+input = sys.stdin.readline
 
-def make_acc(bw):
-    global ans
-    acc= [[0]*M for _ in range(N)]
-    for i in range(N):
-        for j in range(M):
-            if i>0:
-                acc[i][j] += acc[i-1][j]
+N, P = map(int, input().split())
+ans = 0
+stk = [[] for _ in range(7)]
 
-            if j>0:
-                acc[i][j] += acc[i][j-1]
+for _ in range(N):
+    line, p = map(int, input().split())
 
-            if i>0 and j>0:
-                acc[i][j] -= acc[i-1][j-1]
+    while stk[line] and stk[line][-1] > p:
+        stk[line].pop()
+        ans += 1
 
-            if (i+j)%2 and board[i][j] == bw:
-                acc[i][j] += 1
+    if stk[line] and stk[line][-1] == p:
+        continue
 
-            if (i+j)%2 == 0 and board[i][j] != bw:
-                acc[i][j] += 1
+    stk[line].append(p)
+    ans += 1
 
-    for i in range(N-7):
-        for j in range(M-7):
-            cnt = acc[i+7][j+7]
-            if i > 0:
-                cnt -= acc[i-1][j+7]
-
-            if j>0:
-                cnt -= acc[i+7][j-1]
-
-            if i>0 and j>0:
-                cnt += acc[i-1][j-1]
-
-            ans = min(ans, cnt)
-
-
-make_acc('B')
-make_acc('W')
 print(ans)
-
