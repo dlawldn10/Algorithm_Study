@@ -916,25 +916,42 @@
 # print(ans)
 
 
-# 2841
-import sys
-input = sys.stdin.readline
+# # 2841
+# import sys
+# input = sys.stdin.readline
 
-N, P = map(int, input().split())
-ans = 0
-stk = [[] for _ in range(7)]
+# N, P = map(int, input().split())
+# ans = 0
+# stk = [[] for _ in range(7)]
 
-for _ in range(N):
-    line, p = map(int, input().split())
+# for _ in range(N):
+#     line, p = map(int, input().split())
 
-    while stk[line] and stk[line][-1] > p:
-        stk[line].pop()
-        ans += 1
+#     while stk[line] and stk[line][-1] > p:
+#         stk[line].pop()
+#         ans += 1
 
-    if stk[line] and stk[line][-1] == p:
-        continue
+#     if stk[line] and stk[line][-1] == p:
+#         continue
 
-    stk[line].append(p)
-    ans += 1
+#     stk[line].append(p)
+#     ans += 1
 
-print(ans)
+# print(ans)
+
+
+# 4796
+n = 0
+while True:
+    n += 1
+    L, P, V = map(int, input().split())
+    if L == 0 and P == 0 and V == 0:
+        break
+
+    a = V // P
+    b = V % P
+    if b >= L:
+        print(f"Case {n}: {V//P*L + L}")
+    else:
+        print(f"Case {n}: {V//P*L + V%P}")
+    
