@@ -940,18 +940,57 @@
 # print(ans)
 
 
-# 4796
-n = 0
-while True:
-    n += 1
-    L, P, V = map(int, input().split())
-    if L == 0 and P == 0 and V == 0:
-        break
+# # 4796
+# n = 0
+# while True:
+#     n += 1
+#     L, P, V = map(int, input().split())
+#     if L == 0 and P == 0 and V == 0:
+#         break
 
-    a = V // P
-    b = V % P
-    if b >= L:
-        print(f"Case {n}: {V//P*L + L}")
-    else:
-        print(f"Case {n}: {V//P*L + V%P}")
+#     a = V // P
+#     b = V % P
+#     if b >= L:
+#         print(f"Case {n}: {V//P*L + L}")
+#     else:
+#         print(f"Case {n}: {V//P*L + V%P}")
+
+
+#15686
+from itertools import combinations
+
+N, M = map(int, input().split())
+r = 0
+c = 0
+house = []
+chicken = []
+for _ in range(N):
+    r += 1
+    ary = list(map(int, input().split()))
+    # print(ary)
     
+
+    for a in ary:
+        c += 1
+        if a == 1:
+            house.append((r, c))
+        elif a == 2:
+            chicken.append((r, c))
+    c = 0  
+
+def get_dist(coord1, coord2):
+    r1, c1 = coord1
+    r2, c2 = coord2
+    return abs(r1 - r2) +  abs(c1 - c2)
+
+
+ans = 2 * N * len(house)
+for comb in combinations(chicken, M):
+    tot = 0
+    for h in house:
+        tot += min(get_dist(h, ch) for ch in comb)
+    
+    ans = min(ans, tot)
+
+
+print(ans)
