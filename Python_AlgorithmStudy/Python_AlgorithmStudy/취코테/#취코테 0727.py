@@ -956,41 +956,86 @@
 #         print(f"Case {n}: {V//P*L + V%P}")
 
 
-#15686
-from itertools import combinations
+# #15686
+# from itertools import combinations
+
+# N, M = map(int, input().split())
+# r = 0
+# c = 0
+# house = []
+# chicken = []
+# for _ in range(N):
+#     r += 1
+#     ary = list(map(int, input().split()))
+#     # print(ary)
+    
+
+#     for a in ary:
+#         c += 1
+#         if a == 1:
+#             house.append((r, c))
+#         elif a == 2:
+#             chicken.append((r, c))
+#     c = 0  
+
+# def get_dist(coord1, coord2):
+#     r1, c1 = coord1
+#     r2, c2 = coord2
+#     return abs(r1 - r2) +  abs(c1 - c2)
+
+
+# ans = 2 * N * len(house)
+# for comb in combinations(chicken, M):
+#     tot = 0
+#     for h in house:
+#         tot += min(get_dist(h, ch) for ch in comb)
+    
+#     ans = min(ans, tot)
+
+
+# print(ans)
+
+
+# 1389
+from collections import deque
 
 N, M = map(int, input().split())
-r = 0
-c = 0
-house = []
-chicken = []
-for _ in range(N):
-    r += 1
-    ary = list(map(int, input().split()))
-    # print(ary)
-    
+gr = [[False] * N for _ in range(N)]
+for _ in range(M):
+    a, b = map(int, input().split())
+    gr[a-1][b-1] = gr[b-1][a-1] = True
 
-    for a in ary:
-        c += 1
-        if a == 1:
-            house.append((r, c))
-        elif a == 2:
-            chicken.append((r, c))
-    c = 0  
+ans = -1
+ans_tot = 987654321
+dist = [[0] * N for _ in range(N)]
 
-def get_dist(coord1, coord2):
-    r1, c1 = coord1
-    r2, c2 = coord2
-    return abs(r1 - r2) +  abs(c1 - c2)
+def bfs(start, goal):
+    chk = [False]*N
+    dq = deque()
+    chk[start] = True
+    dq.append((start, 0))
+    while dq:
+        now, d = dq.popleft()
+        if now == goal:
+            return d
+
+        for nxt in range(N):
+            if gr[now][nxt] and not chk[nxt]:
+                chk[nxt] = True
+                dq.append((nxt, d+1))
 
 
-ans = 2 * N * len(house)
-for comb in combinations(chicken, M):
+for i in range(N):
     tot = 0
-    for h in house:
-        tot += min(get_dist(h, ch) for ch in comb)
-    
-    ans = min(ans, tot)
+    for j in range(N):
+        if i != j:
+            if dist[i][j] == 0:
+                dist[i][j] = dist[j][i] = bfs(i, j)
 
+            tot += dist[i][j]
 
-print(ans)
+    if ans_tot > tot:
+        ans = i
+        ans_tot = tot
+
+print(ans+1)
