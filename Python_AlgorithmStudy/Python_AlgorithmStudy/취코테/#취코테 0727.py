@@ -1056,22 +1056,43 @@
 # print(ans**2)
 
 
-# 2696
-# 다시 해보기
-for _ in range(int(input())):
-    M = int(input())
-    ipt = []
-    for _ in range(M//10+1 if M%10 else M//10):
-        ipt += map(int, input().split())
+# # 2696
+# # 다시 해보기
+# for _ in range(int(input())):
+#     M = int(input())
+#     ipt = []
+#     for _ in range(M//10+1 if M%10 else M//10):
+#         ipt += map(int, input().split())
 
-    arr = []
-    ans = []
-    for i, v in enumerate(ipt):
-        arr.append(v)
-        if (i&1) == 0:
-            arr.sort()
-            ans.append(arr[i//2])
+#     arr = []
+#     ans = []
+#     for i, v in enumerate(ipt):
+#         arr.append(v)
+#         if (i&1) == 0:
+#             arr.sort()
+#             ans.append(arr[i//2])
         
-    print(len(ans))
-    for i in range(len(ans) // 10+1 if len(ans) % 10 else len(ans)//10):
-        print(*ans[i*10:(i+1)*10])
+#     print(len(ans))
+#     for i in range(len(ans) // 10+1 if len(ans) % 10 else len(ans)//10):
+#         print(*ans[i*10:(i+1)*10])
+
+
+# 1213
+from collections import Counter
+
+alphabet_cnt = Counter(input())
+if sum(cnt%2 for cnt in alphabet_cnt.values()) > 1:
+    print("I'm Sorry Hansoo")
+else:
+    half = ''
+    for ch, cnt in sorted(alphabet_cnt.items()):
+        half += ch * (cnt // 2)
+
+    ans = half
+    for ch, cnt in alphabet_cnt.items():
+        if cnt % 2:
+            ans += ch
+            break
+
+    ans += ''.join(reversed(half))
+    print(ans)
