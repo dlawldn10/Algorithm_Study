@@ -1077,22 +1077,37 @@
 #         print(*ans[i*10:(i+1)*10])
 
 
-# 1213
-from collections import Counter
+# # 1213
+# from collections import Counter
 
-alphabet_cnt = Counter(input())
-if sum(cnt%2 for cnt in alphabet_cnt.values()) > 1:
-    print("I'm Sorry Hansoo")
-else:
-    half = ''
-    for ch, cnt in sorted(alphabet_cnt.items()):
-        half += ch * (cnt // 2)
+# alphabet_cnt = Counter(input())
+# if sum(cnt%2 for cnt in alphabet_cnt.values()) > 1:
+#     print("I'm Sorry Hansoo")
+# else:
+#     half = ''
+#     for ch, cnt in sorted(alphabet_cnt.items()):
+#         half += ch * (cnt // 2)
 
-    ans = half
-    for ch, cnt in alphabet_cnt.items():
-        if cnt % 2:
-            ans += ch
-            break
+#     ans = half
+#     for ch, cnt in alphabet_cnt.items():
+#         if cnt % 2:
+#             ans += ch
+#             break
 
-    ans += ''.join(reversed(half))
-    print(ans)
+#     ans += ''.join(reversed(half))
+#     print(ans)
+
+
+# 17298
+N = int(input())
+arr = list(map(int, input().split()))
+stk = []
+ans = [-1 for _ in range(N)]
+for i in range(N):
+    while stk and arr[stk[-1]] < arr[i]:
+        ans[stk[-1]] = arr[i]
+        stk.pop(-1)
+
+    stk.append(i)
+
+print(' '.join(map(str, ans)))
