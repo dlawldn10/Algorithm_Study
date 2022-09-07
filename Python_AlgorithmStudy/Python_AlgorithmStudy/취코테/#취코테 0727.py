@@ -1098,16 +1098,34 @@
 #     print(ans)
 
 
-# 17298
+# # 17298
+# N = int(input())
+# arr = list(map(int, input().split()))
+# stk = []
+# ans = [-1 for _ in range(N)]
+# for i in range(N):
+#     while stk and arr[stk[-1]] < arr[i]:
+#         ans[stk[-1]] = arr[i]
+#         stk.pop(-1)
+
+#     stk.append(i)
+
+# print(' '.join(map(str, ans)))
+
+
+#1015
 N = int(input())
-arr = list(map(int, input().split()))
-stk = []
-ans = [-1 for _ in range(N)]
-for i in range(N):
-    while stk and arr[stk[-1]] < arr[i]:
-        ans[stk[-1]] = arr[i]
-        stk.pop(-1)
+A = list(map(int, input().split()))
+B = sorted(A)
 
-    stk.append(i)
+chk = [False]*N
+P = []
+for i in A:
+    for j in range(B.index(i), N):
+        if i == B[j] and not chk[j]:
+            chk[j] = True
+            P.append(j)
+            break
 
-print(' '.join(map(str, ans)))
+
+print(" ".join(map(str, P)))
