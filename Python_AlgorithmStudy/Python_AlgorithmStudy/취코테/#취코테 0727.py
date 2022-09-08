@@ -1113,19 +1113,31 @@
 # print(' '.join(map(str, ans)))
 
 
-#1015
+# #1015
+# N = int(input())
+# A = list(map(int, input().split()))
+# B = sorted(A)
+
+# chk = [False]*N
+# P = []
+# for i in A:
+#     for j in range(B.index(i), N):
+#         if i == B[j] and not chk[j]:
+#             chk[j] = True
+#             P.append(j)
+#             break
+
+
+# print(" ".join(map(str, P)))
+
+
+#10819
+from itertools import permutations
+
 N = int(input())
 A = list(map(int, input().split()))
-B = sorted(A)
+ans = -1
+for arr in set(permutations(A, N)):
+    ans = max(ans, sum(abs(arr[i-1] - arr[i]) for i in range(1, N)))
 
-chk = [False]*N
-P = []
-for i in A:
-    for j in range(B.index(i), N):
-        if i == B[j] and not chk[j]:
-            chk[j] = True
-            P.append(j)
-            break
-
-
-print(" ".join(map(str, P)))
+print(ans)
