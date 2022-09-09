@@ -1131,13 +1131,20 @@
 # print(" ".join(map(str, P)))
 
 
-#10819
-from itertools import permutations
+# #10819
+# from itertools import permutations
 
+# N = int(input())
+# A = list(map(int, input().split()))
+# ans = -1
+# for arr in set(permutations(A, N)):
+#     ans = max(ans, sum(abs(arr[i-1] - arr[i]) for i in range(1, N)))
+
+# print(ans)
+
+
+# 1026
 N = int(input())
-A = list(map(int, input().split()))
-ans = -1
-for arr in set(permutations(A, N)):
-    ans = max(ans, sum(abs(arr[i-1] - arr[i]) for i in range(1, N)))
-
-print(ans)
+A = sorted(map(int, input().split()))
+B = sorted(map(int, input().split()), reverse=True)
+print(sum(A[i]*B[i] for i in range(N)))
