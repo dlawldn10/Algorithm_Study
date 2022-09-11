@@ -1143,8 +1143,23 @@
 # print(ans)
 
 
-# 1026
-N = int(input())
-A = sorted(map(int, input().split()))
-B = sorted(map(int, input().split()), reverse=True)
-print(sum(A[i]*B[i] for i in range(N)))
+# # 1026
+# N = int(input())
+# A = sorted(map(int, input().split()))
+# B = sorted(map(int, input().split()), reverse=True)
+# print(sum(A[i]*B[i] for i in range(N)))
+
+
+#3986
+ans = 0
+for _ in range(int(input())):
+    stk = []
+    for ch in input():
+        if not stk or stk[-1] != ch:
+            stk.append(ch)
+        else:
+            stk.pop()
+
+    ans += len(stk) == 0
+
+print(ans)
