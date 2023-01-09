@@ -156,7 +156,37 @@
 #     init.pop()
 
 # print("".join(init + list(reversed(stk))))
-  
+
+
+#9935
+#11:27
+#--
+
+# 정답코드
+import sys
+input = sys.stdin.readline
+word = list(input().rstrip())
+x = list(input().rstrip())
+stack = []
+for i in word:
+
+    #스택에 문자를 일단 넣는다.
+    stack.append(i)
+
+    # 폭발문자열의 마지막과 Word의 문자열 비교한다.
+    if stack[-1] == x[-1] and len(stack) >= len(x):
+
+        #스택의 뒤에서부터 폭발문자열의 길이까지의 문자열이 폭발 문자열과 같으면,
+        if stack[-len(x):] == x:
+            #폭발 문자열의 길이 만큼 스택에서 pop하여 해당 문자열들을 빼낸다.
+            for i in range(len(x)): stack.pop()
+            
+if stack:
+    print("".join(stack))
+else:
+    print("FRULA")
+
+
 
 
 
