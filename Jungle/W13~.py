@@ -162,29 +162,90 @@
 #11:27
 #--
 
-# 정답코드
-import sys
-input = sys.stdin.readline
-word = list(input().rstrip())
-x = list(input().rstrip())
-stack = []
-for i in word:
+# # 정답코드
+# import sys
+# input = sys.stdin.readline
+# word = list(input().rstrip())
+# x = list(input().rstrip())
+# stack = []
+# for i in word:
 
-    #스택에 문자를 일단 넣는다.
-    stack.append(i)
+#     #스택에 문자를 일단 넣는다.
+#     stack.append(i)
 
-    # 폭발문자열의 마지막과 Word의 문자열 비교한다.
-    if stack[-1] == x[-1] and len(stack) >= len(x):
+#     # 폭발문자열의 마지막과 Word의 문자열 비교한다.
+#     if stack[-1] == x[-1] and len(stack) >= len(x):
 
-        #스택의 뒤에서부터 폭발문자열의 길이까지의 문자열이 폭발 문자열과 같으면,
-        if stack[-len(x):] == x:
-            #폭발 문자열의 길이 만큼 스택에서 pop하여 해당 문자열들을 빼낸다.
-            for i in range(len(x)): stack.pop()
+#         #스택의 뒤에서부터 폭발문자열의 길이까지의 문자열이 폭발 문자열과 같으면,
+#         if stack[-len(x):] == x:
+#             #폭발 문자열의 길이 만큼 스택에서 pop하여 해당 문자열들을 빼낸다.
+#             for i in range(len(x)): stack.pop()
             
-if stack:
-    print("".join(stack))
-else:
-    print("FRULA")
+# if stack:
+#     print("".join(stack))
+# else:
+#     print("FRULA")
+
+
+#2231
+#11:03
+#11:23
+# N = int(input())
+# ans = 0
+# for i in range(1, N):
+#     res = 0
+#     res += i
+#     spl = list(str(i))
+#     for j in spl:
+#         res += int(j)
+#     if res == N:
+#         ans = i
+#         break
+# print(ans)
+
+
+#2789
+#11:23
+#11:30
+# from itertools import combinations
+# N, M = map(int, input().split())
+# cards = list(map(int, input().split()))
+# sumBig = 0
+# for i in combinations(cards, 3):
+#     if sumBig <= sum(i) and sum(i) <= M:
+#         sumBig = sum(i)
+# print(sumBig)
+
+
+#10974
+#11:30
+#11:37
+# from itertools import permutations
+# N = int(input())
+# lst = [i for i in range(1, N+1)]
+# for j in permutations(lst):
+#     print(' '.join(map(str, list(j))))
+
+
+#6603
+#11:37
+#11:50
+from itertools import combinations
+while True:
+    numStr = list(map(int, input().split()))
+    K = numStr[0]
+    if K == 0:
+        break
+    numList = []
+    for i in range(1, K+1):
+        numList.append(numStr[i])
+    for j in combinations(numList, 6):
+        print(' '.join(map(str, list(j))))
+    print()
+
+
+
+
 
 
 
