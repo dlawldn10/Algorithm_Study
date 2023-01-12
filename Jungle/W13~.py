@@ -230,18 +230,83 @@
 #6603
 #11:37
 #11:50
-from itertools import combinations
-while True:
-    numStr = list(map(int, input().split()))
-    K = numStr[0]
-    if K == 0:
-        break
-    numList = []
-    for i in range(1, K+1):
-        numList.append(numStr[i])
-    for j in combinations(numList, 6):
-        print(' '.join(map(str, list(j))))
-    print()
+# from itertools import combinations
+# while True:
+#     numStr = list(map(int, input().split()))
+#     K = numStr[0]
+#     if K == 0:
+#         break
+#     numList = []
+#     for i in range(1, K+1):
+#         numList.append(numStr[i])
+#     for j in combinations(numList, 6):
+#         print(' '.join(map(str, list(j))))
+#     print()
+
+
+#10815
+#11:01
+#11:19
+# N = int(input())
+# cards = list(map(int, input().split()))
+# M = int(input())
+# ans = [0 for _ in range(0, M)]
+# lst = list(map(int, input().split()))
+# cards.sort()
+
+# for i in range(0, len(lst)):
+#     left = 0
+#     right = len(cards)-1
+#     mid = (left + right) // 2
+
+#     while left <= right:
+#         if cards[mid] == lst[i]:
+#             ans[i] = 1
+#             break
+#         elif cards[mid] > lst[i]:
+#             right = mid - 1
+#         else:
+#             left = mid + 1
+
+#         mid = (left + right) // 2
+
+# print(' '.join(map(str, ans)))
+
+
+#2343
+#11:25
+# --
+#정답코드
+#가능한 블루레이의 크기를 이분탐색
+N, M = map(int, input().split())
+lessons = list(map(int, input().split()))
+l = max(lessons)
+r = sum(lessons)
+m = (l + r) // 2
+ans = r
+
+def is_possible(sz):
+    cnt = 1
+    bluray = 0
+    for lesson in lessons:
+        if bluray + lesson <= sz:
+            bluray += lesson
+        else:
+            cnt += 1
+            bluray = lesson
+    return cnt <= M
+
+while l <= r:
+    if is_possible(m):
+        ans = m
+        r = m - 1
+    else:
+        l = m + 1
+
+    m = (l + r) // 2
+
+print(ans)
+
 
 
 
