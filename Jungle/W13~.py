@@ -310,35 +310,39 @@
 
 #1654
 #11:13
-K, N = map(int, input().split())
-lines = []
-for _ in range(0, K):
-    lines.append(int(input()))
+#11:32
+# K, N = map(int, input().split())
+# lines = []
+# for _ in range(0, K):
+#     lines.append(int(input()))
 
-l = 1
-r = max(lines)
-mid = (l+r)//2
+# l = 1
+# r = max(lines)
+# mid = (l+r)//2
 
-# 해당 길이의 랜선이 몇개가 될 수 있는지
-def is_possible(sz):
-    cnt = 0
-    for line in lines:
-        cnt += line // sz
-    return cnt >= N
+# # 해당 길이의 랜선이 몇개가 될 수 있는지
+# def is_possible(sz):
+#     cnt = 0
+#     for line in lines:
+#         cnt += line // sz
+#     return cnt >= N
 
-ans = 0
-while l <= r:
-    # 조건을 만족하여 더 커질 수 있다.
-    if is_possible(mid):
-        ans = mid
-        l = mid + 1
-    else:
-        # 너무 커서 조건에 부합하지 않는다.
-        r = mid - 1
+# ans = 0
+# while l <= r:
+#     # 조건을 만족하여 더 커질 수 있다.
+#     if is_possible(mid):
+#         ans = mid
+#         l = mid + 1
+#     else:
+#         # 너무 커서 조건에 부합하지 않는다.
+#         r = mid - 1
 
-    mid = (l+r)//2
+#     mid = (l+r)//2
 
-print(ans)
+# print(ans)
+
+
+
 
 
 
