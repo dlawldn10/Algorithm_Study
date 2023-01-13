@@ -277,33 +277,66 @@
 #11:25
 # --
 #정답코드
-#가능한 블루레이의 크기를 이분탐색
-N, M = map(int, input().split())
-lessons = list(map(int, input().split()))
-l = max(lessons)
-r = sum(lessons)
-m = (l + r) // 2
-ans = r
+# #가능한 블루레이의 크기를 이분탐색
+# N, M = map(int, input().split())
+# lessons = list(map(int, input().split()))
+# l = max(lessons)
+# r = sum(lessons)
+# m = (l + r) // 2
+# ans = r
 
+# def is_possible(sz):
+#     cnt = 1
+#     bluray = 0
+#     for lesson in lessons:
+#         if bluray + lesson <= sz:
+#             bluray += lesson
+#         else:
+#             cnt += 1
+#             bluray = lesson
+#     return cnt <= M
+
+# while l <= r:
+#     if is_possible(m):
+#         ans = m
+#         r = m - 1
+#     else:
+#         l = m + 1
+
+#     m = (l + r) // 2
+
+# print(ans)
+
+
+#1654
+#11:13
+K, N = map(int, input().split())
+lines = []
+for _ in range(0, K):
+    lines.append(int(input()))
+
+l = 1
+r = max(lines)
+mid = (l+r)//2
+
+# 해당 길이의 랜선이 몇개가 될 수 있는지
 def is_possible(sz):
-    cnt = 1
-    bluray = 0
-    for lesson in lessons:
-        if bluray + lesson <= sz:
-            bluray += lesson
-        else:
-            cnt += 1
-            bluray = lesson
-    return cnt <= M
+    cnt = 0
+    for line in lines:
+        cnt += line // sz
+    return cnt >= N
 
+ans = 0
 while l <= r:
-    if is_possible(m):
-        ans = m
-        r = m - 1
+    # 조건을 만족하여 더 커질 수 있다.
+    if is_possible(mid):
+        ans = mid
+        l = mid + 1
     else:
-        l = m + 1
+        # 너무 커서 조건에 부합하지 않는다.
+        r = mid - 1
 
-    m = (l + r) // 2
+    mid = (l+r)//2
 
 print(ans)
 
