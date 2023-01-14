@@ -342,6 +342,41 @@
 # print(ans)
 
 
+#1300
+#11:09
+# # 메모리 초과 코드
+# import heapq
+# N = int(input())
+# K = int(input())
+# hq = []
+# for i in range(1, N+1):
+#     for j in range(1, N+1):
+#         heapq.heappush(hq, i*j)
+
+# for _ in range(K-1):
+#     heapq.heappop(hq)
+
+# print(heapq.heappop(hq))
+
+# 정답 코드
+# mid를 행으로 나눈 몫을 더해서 해당 mid가 몇번째 숫자인지를 구하고, 그게 K번째 숫자가 맞으면 프린트한다.
+N, K = int(input()), int(input())
+start, end = 1, K
+
+while start <= end:
+    mid = (start + end) // 2
+    
+    temp = 0
+    for i in range(1, N+1):
+        temp += min(mid//i, N) #mid 이하의 i의 배수 or 최대 N
+    
+    if temp >= K: #이분탐색 실행
+        answer = mid
+        end = mid - 1
+    else:
+        start = mid + 1
+print(answer)
+
 
 
 
