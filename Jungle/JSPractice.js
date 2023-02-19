@@ -613,6 +613,212 @@ function solution(array, n) {
 }
 
 
+// 컨트롤 제트
+function solution(s) {
+    var stack = [];
+
+    s.split(' ').forEach(it => {
+        if (it != 'Z') stack.push(it)
+        else stack.pop()
+    })
+
+    return stack.map(Number).reduce((acc, val) => acc + val, 0);
+}
+
+
+// 삼육구 게임
+function solution(order) {
+    var answer = 0;
+    order.toString().split('').forEach(it => {
+        if (it == '3' || it == '6' || it == '9') answer++
+    })
+    return answer;
+
+    // 또는 matchAll() 사용
+    return [...order.toString().matchAll(/[3|6|9]/g)].length
+
+}
+
+
+// 암호 해독
+function solution(cipher, code) {
+    var answer = '';
+    for (let i = code-1 ; i < cipher.length; i += code) {
+        answer += cipher[i]
+    }
+    return answer;
+}
+
+
+// 대문자와 소문자
+function solution(my_string) {
+    let answer = '';
+    [...my_string].forEach(it => {
+        if (it.match(/[a-z]/g)) answer += it.toUpperCase()
+        else answer += it.toLowerCase()
+    });
+    return answer;
+
+    // 또는
+    return [...my_string].map(it => {
+        if (it.match(/[a-z]/g)) it = it.toUpperCase()
+        else it = it.toLowerCase()
+        return it
+    }).join("");
+
+}
+
+
+// 인덱스 바꾸기
+function solution(my_string, num1, num2) {
+    let copy = [...my_string];
+    let tmp = my_string[num1];
+    copy[num1] = copy[num2]
+    copy[num2] = tmp
+    return copy.join('');
+
+    // 또는
+    my_string = my_string.split('');
+    [my_string[num1], my_string[num2]] = [my_string[num2], my_string[num1]];
+    return my_string.join('');
+}
+
+
+// 한번만 등장한 문자
+function solution(s) {
+    var answer = new Set();
+
+    for (let i = 0; i < s.length; i++) {
+        if (s.split('').filter( it => s[i] === it).length === 1){
+            answer.add(s[i])
+        }
+    }
+
+    return [...answer].sort().join('');
+
+
+    // 또는 lastIndexOf() 함수를 이용
+    let res = [];
+    for (let c of s) if (s.indexOf(c) === s.lastIndexOf(c)) res.push(c);
+    return res.sort().join('');
+}
+
+
+
+// 약수 구하기
+function solution(n) {
+    var answer = [];
+    let i = 1;
+    while (i <= n){
+        if (n % i == 0) answer.push(i)
+        i++
+    }
+    return answer;
+}
+
+
+
+// 영어가 싫어요
+function solution(numbers) {
+    let array = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" ];
+    for (let i=0; i < array.length; i++) {
+        numbers = numbers.split(array[i]).join(i.toString())
+    }
+    return parseInt(numbers);
+
+    // 또는 객체 + 정규 표현식 + replace() 콜백 이용
+    const obj = {
+        zero: 0, one: 1, two: 2, three: 3, four: 4,
+        five: 5, six: 6, seven: 7, eight: 8, nine: 9
+    };
+
+    const num = numbers.replace(/zero|one|two|three|four|five|six|seven|eight|nine/g, v => obj[v]);
+
+    return Number(num);
+}
+
+
+// 잘라서 배열로 저장하기
+function solution(my_str, n) {
+    var answer = [];
+    for (let i = 0; i < my_str.length; i += n) {
+        answer.push(my_str.split('').slice(i, i+n).join(''))
+    }
+    return answer;
+}
+
+
+
+// 문자열 계산하기
+function solution(my_string) {
+    return eval(my_string);
+
+    // 또는
+    const stack = [];
+
+    let sign = 1;
+    for (const ch of my_string.split(" ")) {
+        if (ch === "+") {
+            sign = 1;
+        } else if (ch === "-") {
+            sign = -1;
+        } else {
+            stack.push(ch * sign);
+        }
+    }
+
+    return stack.reduce((a,b) => a + b, 0);
+}
+
+
+
+// 외계어 사전
+// dfs 순열 사용
+let result = Array(10).fill(0)
+let checklist = Array(10).fill(0)
+let permutations = []
+function solution(spell, dic) {
+    dfs(0, spell)
+    console.log(permutations)
+
+    for (let word of dic) {
+        for (let permutation of permutations) {
+            if (word == permutation){
+                return 1
+            }
+        }
+    }
+
+    return 2;
+}
+
+function dfs(L, spell) {
+    if (L == spell.length) {
+        permutations.push(result.filter(it => it != 0).join(''));
+    }
+    else {
+        for (let i = 0; i < spell.length; i++){
+            if (checklist[i] == 0){
+                result[L] = spell[i];
+                checklist[i] = 1
+                dfs(L+1, spell)
+                checklist[i] = 0
+            }
+        }
+    }
+
+}
+
+
+// 또는
+// 그냥 정렬해서 내용 같으면 1 return
+function solution(spell, dic) {
+    spell = spell.sort().join("")
+    dic = dic.filter((el)=>el.split("").sort().join("") == spell)
+    return dic[0] ? 1 : 2
+}
+
+
 
 
 
