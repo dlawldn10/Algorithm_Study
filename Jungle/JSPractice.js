@@ -820,6 +820,473 @@ function solution(spell, dic) {
 
 
 
+// 문자열 밀기
+// 2:37
+// 2:44
+function solution(A, B) {
+    let Aarray = A.split('');
+    for (let i = 0; i < A.length; i++) {
+        if (Aarray.join('') == B) return i
+        Aarray.unshift(Aarray.pop())
+    }
+    return -1;
+
+    // 또는
+    // B 2개를 이어붙여서 A가 시작되는 인덱스를 리턴한다. = 몇번 밀면 되는지 나온다.
+    return (B+B).indexOf(A)
+}
+
+
+
+// 폰켓몬
+// 2:49
+// 3:02
+function solution(nums) {
+    var answer = 0;
+    nums.sort((a, b) => a - b)
+    let map = new Map()
+    let pre = 0
+    for (let num of nums) {
+        if (num != pre){
+            pre = num
+            map.set(num, 1)
+        }else{
+            map.set(num, map.get(num) + 1)
+        }
+    }
+    console.log(map)
+    if (map.size >= nums.length/2) answer = parseInt(nums.length/2)
+    else answer = map.size
+    return answer;
+
+    // 또는
+    // 여기서는 종류 수만 세면 되니까 세트 사용했어도 됨.
+    const max = nums.length / 2;
+    const arr = [...new Set(nums)];
+    return arr.length > max ? max : arr.length
+}
+
+
+
+// 완주하지 못한 선수
+// 3:06
+// 3:14
+function solution(participant, completion) {
+    // let partiMap = new Map()
+    // for (let p of participant) {
+    //     if (!partiMap.has(p)){
+    //         partiMap.set(p, 1)
+    //     }else{
+    //         partiMap.set(p, partiMap.get(p) + 1)
+    //     }
+    // }
+    //
+    // for (let c of completion) {
+    //     if (partiMap.has(c)){
+    //         partiMap.set(c, partiMap.get(c) - 1)
+    //     }
+    // }
+    //
+    // for (let pair of partiMap) {
+    //     if (pair[1] != 0) return pair[0]
+    // }
+
+    // 위 코드를 좀더 간단하게 하면
+    let partiMap = new Map()
+    for (let i = 0; i < participant.length; i++) {
+        let a = participant[i], b = completion[i];
+
+        partiMap.set(a, (partiMap.get(a) || 0) + 1);
+        partiMap.set(b, (partiMap.get(b) || 0) - 1);
+    }
+
+    for (let [name, count] of partiMap) {
+        if (count != 0) return name
+    }
+}
+
+
+// 위장
+// 3:21
+// 3:38
+function solution(clothes) {
+    // let map = new Map()
+    // for (let [name, kind] of clothes) {
+    //
+    //     if (map.has(kind)) {
+    //         let tmp = map.get(kind);
+    //         tmp.push(name);
+    //         map.set(kind, tmp)
+    //     }
+    //     else map.set(kind, [ name ])
+    //
+    // }
+    // return [...map].reduce((acc, val) => acc * (val[1].length + 1), 1) -1;
+
+    // 여기도 마찬가지로 갯수만 있어도 답을 구할 수 있기 때문에
+    // 이렇게 바꿀 수 있다.
+    let map = new Map()
+    for (let [name, kind] of clothes) {
+        map.set(kind, (map.get(kind) || 1) + 1);
+    }
+    return [...map].reduce((acc, val) => acc * val[1], 1) -1;
+}
+
+
+// 베스트 앨범
+// 4:04
+// 5:00
+function solution(genres, plays) {
+    var answer = [];
+    let map = new Map();
+    for (let i = 0; i < genres.length; i++) {
+        let tmp = (map.get(genres[i]) || [])
+        tmp.push([i, plays[i]])
+        map.set(genres[i], tmp)
+    }
+
+    // 장르 내 정렬 -> map
+    for (let [genre, play] of map) {
+        play.sort((a, b) => b[1] - a[1])
+    }
+
+    // 장르별 정렬한 키 결과 -> newMap
+    let newMap =[...map].sort((a, b) => {
+        let tmpB = b[1].reduce((acc, val) => acc + val[1], 1)
+        let tmpA = a[1].reduce((acc, val) => acc + val[1], 1)
+        return tmpB - tmpA
+    }).map(it => [it[0], []]);
+
+    // 장르별 정렬한 키 결과대로 newMap 채우기
+    for (let i=0; i < map.size; i++) {
+        newMap[i][1] = map.get(newMap[i][0]);
+    }
+
+    // newMap 에서 2개씩 뽑기
+    for (let [genre, play] of newMap) {
+        for (let i = 0; i < play.length; i++) {
+            if (i == 2) break
+            answer.push(play[i][0])
+        }
+    }
+    return answer;
+}
+
+
+
+// k 번째 수
+function solution(array, commands) {
+    var answer = [];
+    for (let cmd of commands) {
+        answer.push(array.slice(cmd[0]-1, cmd[1]).sort((a, b) => a-b)[cmd[2]-1])
+    }
+    return answer;
+}
+
+
+// 가장 큰 수
+// 5:35
+// --
+// 시간 초과 및 런타임 에러
+// let n = []
+// let permutations = []
+// let checklist = []
+// let result = []
+// let max = 0
+// function solution(numbers) {
+//     n = numbers.map(String);
+//     checklist = Array(n.length).fill(0)
+//     result = Array(n.length).fill("")
+//     // dfs 순열 사용
+//     dfs(0, n);
+//     return max.toString();
+// }
+//
+// function dfs(L, n) {
+//     if (L == n.length) {
+//         if (parseInt(result.join('')) >= max) max = parseInt(result.join(''))
+//         else return
+//     }
+//     else {
+//         for (let i = 0; i < n.length; i++){
+//             if (checklist[i] == 0){
+//                 result[L] = n[i];
+//                 checklist[i] = 1
+//                 dfs(L+1, n)
+//                 checklist[i] = 0
+//             }
+//         }
+//     }
+//
+// }
+
+function solution(numbers) {
+    numbers = numbers.map(String)
+    numbers.sort((a, b) => parseInt(b+a) - parseInt(a+b))
+    return numbers.join('').indexOf(0) == 0 ? '0' : numbers.join('');
+
+    // 또는
+    // ${}로 숫자 이어붙여서 정렬후 join
+    let answer = numbers.sort((a, b) => `${b}${a}` - `${a}${b}`).join('');
+    return answer[0] === '0' ? '0' : answer;
+}
+
+
+
+// H-Index
+// 6:25
+// 6:29
+function solution(citations) {
+    var answer = 0;
+    let h = Math.max(...citations);
+    while (true){
+        let count = 0;
+        citations.forEach(it => {
+            if (it >= h) count++
+        })
+        if (count >= h) return h
+        h--
+    }
+    return answer;
+
+    // 또는
+    // 정렬을 먼저 한 다음에 수행
+    citations = citations.sort((a, b) => b - a);
+    var i = 0;
+    while(i + 1 <= citations[i]){
+        i++;
+    }
+    return i;
+
+}
+
+
+
+// 최소 직사각형
+// 7:21
+// 7:30
+function solution(sizes) {
+    let xMax = 0;
+    let yMax = 0;
+    sizes.forEach(it => {
+        it.sort((a, b) => a - b)
+        xMax = Math.max(it[0], xMax);
+        yMax = Math.max(it[1], yMax);
+    })
+
+    return xMax*yMax;
+}
+
+
+
+// 모의고사
+// 7:31
+// 8:03
+function solution(answers) {
+    let count = [0, 0, 0];
+    let one = [1, 2, 3, 4, 5];
+    let two = [2, 1, 2, 3, 2, 4, 2, 5];
+    let three = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
+
+    let i = 0
+    while (i < answers.length){
+        if (one[i%5] == answers[i]) count[0] += 1
+        if (two[i%8] == answers[i]) count[1] += 1
+        if (three[i%10] == answers[i]) count[2] += 1
+        i++
+    }
+
+    let max = Math.max(...count);
+    let answer = []
+    count.forEach((it, idx) => {
+        if (it == max) answer.push(idx+1)
+    })
+
+    return answer.sort((a, b) => a - b)
+}
+
+
+
+// 소수 찾기
+// 8:03
+// 8:49
+let result = []
+let checklist = []
+let permutations = new Set()
+function solution(numbers) {
+    var answer = 0;
+    numbers = numbers.split('');
+    let sets = new Set();
+    // 조합 찾기
+    for (let i = 1; i <= numbers.length; i++) {
+        for (let j of getCombinations(numbers, i)){
+            sets.add(j)
+        }
+    }
+
+    // 찾은 조합에 대해 순열 구하기
+    for (let set of sets) {
+        result = Array(set.length).fill('');
+        checklist = Array(set.length).fill(0);
+        getPermutations(0, set)
+    }
+
+
+    // 찾은 순열에 대해 소수 판별
+    for (let permutation of permutations) {
+        if (isPrime(permutation)) {
+            answer++
+        }
+    }
+
+    return answer;
+}
+
+function getCombinations(arr, N) {
+    const results = [];
+    if (N === 1) return arr.map((value) => [value]);
+
+    arr.forEach((fixed, index, origin) => {
+        const rest = origin.slice(index + 1);
+        const combinations = getCombinations(rest, N - 1);
+        const attached = combinations.map((combination) => [fixed, ...combination]);
+        results.push(...attached);
+    });
+
+    return results;
+}
+
+function getPermutations(L, arr) {
+    if (L == arr.length) {
+        permutations.add(parseInt(result.join('')));
+    }
+    else {
+        for (let i = 0; i < arr.length; i++){
+            if (checklist[i] == 0){
+                result[L] = arr[i];
+                checklist[i] = 1
+                getPermutations(L+1, arr)
+                checklist[i] = 0
+            }
+        }
+    }
+
+}
+
+function isPrime(n){
+    if (n == 0 || n == 1) return false
+
+    let i = 2;
+    while (i < Math.sqrt(n)){
+        if (n % i == 0) return false
+        i++
+    }
+    return true;
+}
+
+
+// 좀더 개선된 풀이
+// 정리:
+// - DFS 사용하여 순열 구하기
+// - 효율적으로 소수 찾기
+// - 중복제거를 위한 set 사용
+// - (내부 함수 사용)
+function solution(numbers) {
+    let check = Array(numbers.length).fill(0);
+    let result = new Set();
+
+    function DFS(acc, level, check){
+        if (level == numbers.length){
+            result.add(Number(acc))
+        }else{
+            for (let i = 0; i < numbers.length; i++){
+                if (!check[i]){
+                    check[i] = 1
+                    DFS(acc+numbers[i], level+1, check)
+                    DFS(acc, level+1, check)
+                    check[i] = 0
+                }
+            }
+        }
+    }
+
+    function isPrime(n){
+        if (n <= 1) return false
+        for (let i = 2; i <= Math.sqrt(n); i++){
+            if (n % i == 0) return false
+        }
+        return true
+    }
+
+    DFS('', 0, check);
+    return [...result].filter(it => isPrime(it)).length
+}
+
+
+
+// 카펫
+// 10:00
+// 10:17
+function solution(brown, yellow) {
+    let i = 1;
+    while (i <= yellow){
+        if (yellow % i == 0){
+            let yellow_w = i;
+            let yellow_y = yellow/i;
+            if ((yellow_w+2) * (yellow_y+2) - yellow == brown) {
+                return [yellow_w+2, yellow_y+2].sort((a, b) => b - a)
+            }
+        }
+        i++
+    }
+    return []
+
+}
+
+
+
+// 피로도
+// 10:18
+// 11:18
+// 방향을 잘못 잡았었다...순열 처럼 구현하면 안되고 그냥 단순하게 구현하면 되는 문제였음.
+// 꼭 루트를 다 구하려고 하지 말고 갯수를 셀것!
+function solution(k, dungeons) {
+    let route = [];
+    let count = 1;
+    let check = Array(dungeons.length).fill(0);
+
+    function DFS(count, k){
+        for (let i = 0; i < dungeons.length; i++) {
+            if (!check[i] && dungeons[i][0] <= k){
+                check[i] = 1;
+                route.push(count)
+                DFS(count+1, k-dungeons[i][1]);
+                check[i] = 0;
+            }
+        }
+    }
+
+    DFS(count, k)
+
+    return Math.max(...route);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
