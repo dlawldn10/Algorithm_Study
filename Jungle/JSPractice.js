@@ -1272,6 +1272,336 @@ function solution(k, dungeons) {
 }
 
 
+// 전력망을 둘로 나누기
+// 1:28
+// 2:37
+// 연결 요소 세기 심화
+function solution(n, wires) {
+    var answer = -1;
+    let adj = Array.from(Array(n), () => new Array(n).fill(0))
+    let check = Array(n).fill(0)
+    let nodeCount = 0
+
+    // 모든 연결 요소 표시
+    for (let wire of wires) {
+        let [a, b] = wire
+        adj[a-1][b-1] = 1
+        adj[b-1][a-1] = 1
+    }
+
+
+    let result = []
+    for (let wire of wires) {
+        // 한 와이어 끊고
+        let [a, b] = wire
+        adj[a-1][b-1] = 0
+        adj[b-1][a-1] = 0
+
+        // DFS 수행
+        let pair = []
+        check = Array(n).fill(0)
+        nodeCount = 1
+        for (let i = 0; i < n; i++) {
+            if (!check[i]){
+                check[i] = 1
+                DFS(i)
+                pair.push(nodeCount)
+                nodeCount = 1
+            }
+        }
+        if (pair.length == 2) {
+            result.push(pair)
+        }
+        pair = []
+
+        // 끊었던 선 다시 연결
+        adj[a-1][b-1] = 1
+        adj[b-1][a-1] = 1
+    }
+
+
+    function DFS(i){
+        for (let j = 0; j < n; j++) {
+            if (adj[i][j] && !check[j]){
+                check[j] = 1
+                nodeCount++
+                DFS(j)
+            }
+        }
+    }
+
+    return result.map(it => Math.abs(it[1] - it[0])).sort((a, b) => a-b)[0]
+}
+
+
+
+// 모음 사전
+// 3:34
+// 4:16
+function solution(word) {
+    let alphabet = ['A', 'E', 'I', 'O', 'U']
+    let result = new Set()
+
+    function DFS(str, i){
+        if (str.length == i){
+            result.add(str)
+            return
+        }
+
+        // 각 알파벳에 대해서
+        for (let j = 0; j < 5; j++) {
+            DFS(str + alphabet[j], i)
+        }
+    }
+
+    // 1글자인 경우~5글자인 경우
+    for (let i = 1; i <= 5; i++) {
+        DFS('', i)
+    }
+
+    return [...result].sort().indexOf(word)+1;
+}
+
+
+
+// 타겟 넘버
+// 5:05
+// 5:40
+function solution(numbers, target) {
+    var answer = 0;
+    let operators = ['+', '-']
+    let result = new Set()
+
+    function DFS(str){
+        if (str.length == numbers.length) {
+            result.add(str)
+            return
+        }
+
+        for (let j = 0; j < operators.length; j++) {
+            DFS(str+operators[j])
+        }
+    }
+
+
+
+    DFS('')
+
+    for (let set of result) {
+        if ( operate([...set]) == target) answer++
+    }
+
+
+
+    function operate(list){
+        let operator = ''
+        let acc = 0
+        for (let i = 0; i < list.length; i++) {
+            if (list[i] == '+') operator = '+'
+            else if (list[i] == '-') operator = '-'
+            switch (operator){
+                case '+':
+                    acc += numbers[i]
+                    break
+                case '-':
+                    acc -= numbers[i]
+                    break
+            }
+        }
+        return acc;
+    }
+    return answer;
+}
+
+
+
+// 네트워크
+// 5:42
+// 5:54
+function solution(n, computers) {
+    let check = Array(n).fill(0)
+
+    function DFS(i){
+        for (let j = 0; j < n; j++) {
+            if (!check[j] && computers[i][j]){
+                check[j] = 1
+                DFS(j)
+            }
+        }
+    }
+
+    let count = 0
+    // 모든 노드에 대해서 한번씩 수행
+    for (let i = 0; i < n; i++) {
+        if (!check[i]){
+            count++
+            DFS(i)
+        }
+    }
+    return count;
+}
+
+
+
+// 게임 맵 최단거리
+// 5:56
+// 6:15
+function solution(maps) {
+    var answer = -1;
+    let dy = [0, 1, 0, -1]
+    let dx = [1, 0, -1, 0]
+    let [n, m] = [maps.length, maps[0].length]
+    let check = Array.from(Array(n), () => new Array(m).fill(0))
+    let queue = [[0, 0, 1]]
+
+    function is_valid_coord(y, x){
+        return (0 <= y && y < maps.length) && (0 <= x && x < maps[0].length)
+    }
+
+    while (queue.length > 0){
+        let [y, x, d] = queue.shift()
+
+        if (y == n-1 && x == m-1){
+            answer = d
+            break
+        }
+
+        for (let i = 0; i < 4; i++) {
+            let ny = y + dy[i]
+            let nx = x + dx[i]
+            let nd = d + 1
+            if (is_valid_coord(ny, nx) && !check[ny][nx] && maps[ny][nx]){
+                check[ny][nx] = 1
+                queue.push([ny, nx, nd])
+            }
+        }
+    }
+    return answer;
+}
+
+
+
+// 단어 변환
+// 6:16
+// 6:32
+function solution(begin, target, words) {
+    var answer = 0;
+    let queue = [[begin, 0]]
+
+    if (words.filter(it => it == target).length == 0) return 0
+
+    while (queue.length > 0){
+        let [word, count] = queue.shift()
+        if (word == target){
+            answer = count
+            break
+        }
+
+        for (let i = 0; i < words.length; i++) {
+            // word랑 words[i]랑 한 글자만 다르다면
+            if (word.split('').filter((it, idx) => it != words[i][idx]).length == 1){
+                queue.push([words[i], count+1])
+            }
+        }
+    }
+
+    return answer;
+}
+
+
+
+// 아이템 줍기
+// 7:25
+// --
+// ???아무리 봐도 통과한 사람 코드랑 내 코드랑 차이를 모르겠음.
+// -> 아...겹치는 부분이 초기화가 이상하게되는 것이 문제였음...
+// 통과한 풀이 처럼 테두리는 1, 테두리의 내부는 2로 값을 변경해서 내부, 테두리, 외부를 구분해줘야함.
+// 수정된 풀이
+function solution(rectangle, characterX, characterY, itemX, itemY) {
+    let map = Array.from(Array(101).fill(0), () => Array(101).fill(0));
+
+    let doubledPoints = rectangle.map((current) =>
+        current.map((point) => point * 2)
+    );
+
+    // check 배열 초기화
+    for (let [x1, y1, x2, y2] of doubledPoints) {
+        for (let i = y1; i <= y2; i++) {
+            for (let j = x1; j <= x2; j++) {
+                if (j === x1 || j === x2 || i === y1 || i === y2){
+                    if (map[j][i] == 0) map[j][i] = 1;
+                } else {
+                    map[j][i] = 2; // 테두리가 아닌 경우
+                }
+            }
+        }
+    }
+
+
+    function is_valid_coord(nX, nY) {
+        return (nX >= 0 && nX < 101 && nY >= 0 && nY < 101);
+    }
+
+    characterX *= 2;
+    characterY *= 2;
+    itemX *= 2;
+    itemY *= 2;
+
+    let dy = [0, 1, 0, -1];
+    let dx = [1, 0, -1, 0];
+
+    let queue = [[characterX, characterY, 0]];
+    map[characterX][characterY] = 0;
+
+    while (queue.length){
+
+        let [x, y, d] = queue.shift();
+
+        if (y === itemY && x === itemX){
+            return d / 2;
+        }
+
+        for (let i = 0; i < 4; i++) {
+            let ny = y + dy[i];
+            let nx = x + dx[i];
+            let nd = d + 1;
+            if (is_valid_coord(nx, ny)){
+                if (map[nx][ny] === 1){
+                    map[nx][ny] = 0;
+                    queue.push([nx, ny, nd])
+                }
+
+            }
+
+        }
+    }
+
+}
+
+
+
+// BinaryGap
+// 2:16
+// 2:37
+function solution(N) {
+    N = N.toString(2)
+
+    let tmp = N.split('1').map(it => it.length)
+    if (N.endsWith('0')) {
+        tmp = tmp.slice(0, tmp.length-1)
+    }
+
+    let idx = tmp.indexOf(Math.max(...tmp))
+    return tmp[idx]
+
+}
+
+
+
+
+
+
+
 
 
 
