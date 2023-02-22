@@ -1598,16 +1598,302 @@ function solution(N) {
 
 
 
+// 체육복
+// 4:04
+// 4:28
+function solution(n, lost, reserve) {
+    let list = Array(n).fill(1)
+
+    for (let i = 0; i < n; i++) {
+        // 여분 있는 학생 표시
+        if (reserve.filter(it => it == i+1).length == 1) list[i] += 1
+        // 도난당함
+        if (lost.filter(it => it == i+1).length == 1) list[i] -= 1
+    }
+
+    // 그냥 앞뒤 검사해서 0이면 1부여
+    for (let i = 0; i < list.length; i++) {
+        if (list[i] == 2){
+            if (i != 0 && list[i-1] == 0){
+                list[i-1] = 1
+            }else if (i != list.length-1 && list[i+1] == 0){
+                list[i+1] = 1
+            }
+            list[i] = 1
+        }
+    }
+
+    return list.filter(it => it == 1).length;
+}
+
+
+// 조이스틱
+// 4:29
+// --
+function solution(name) {
+    let changeAlphabet = 0;
+    let minMoves = name.length - 1;
+
+    for (let i = 0; i < name.length; i++) {
+        let changeNum = name.charCodeAt(i);
+
+        if (changeNum < 78) {
+            changeAlphabet += changeNum - 65;
+        } else {
+            changeAlphabet += 91 - changeNum;
+        }
+
+        let index = i + 1;
+        while (index < name.length && name[index] == 'A') index++;
+
+        minMoves = Math.min(minMoves, (i*2) + name.length - index);
+        minMoves = Math.min(minMoves, (name.length - index) * 2 + i);
+    }
+
+    return changeAlphabet + minMoves;
+}
 
 
 
 
+// 입국 심사
+// 8:31
+// --
+// 이분탐색 문제 -> 최대, 최소 초기값을 잘 설정할 것
+function solution(n, times) {
+    var answer = 1000000000;
+    let [min, max] = [1, Math.max(...times) * n]
+
+    while (min <= max){
+        let mid = Math.floor((min + max) / 2)
+
+        let count = 0
+        for (let i = 0; i < times.length; i++) {
+            count += Math.floor(mid / times[i])
+        }
+
+        if (count >= n){
+            max = mid - 1
+        }else if(count < n){
+            min = mid + 1
+        }
+
+    }
+    return min;
+}
+
+
+
+// 코딜리티 모의 테스트 코드
+function solution(A) {
+    let tmp = 1
+    while (true){
+        // 이 수가 존재하면 +1
+        if (A.indexOf(tmp) != -1) tmp++
+        else return tmp
+    }
+}
+
+
+
+// brackets
+// 9:43
+// 10:01
+function solution(S) {
+    let stack = []
+    let map = new Map([
+        ["(", ")"],
+        ["{", "}"],
+        ["[", "]"]
+    ])
+    for (let b of S) {
+        if (b == "(" || b == "{" || b== "["){
+            stack.push(b)
+        }else{
+            if (stack.length == 0 || map.get(stack.pop()) != b) return 0
+        }
+    }
+
+    return stack.length != 0 ? 0 : 1
+}
+
+
+
+// fish
+// 10:02
+// 11:00
+function solution(A, B) {
+    let upstream = []
+    let downstream = []
+    for (let i = 0; i < A.length; i++) {
+        if (B[i] == 0){
+            upstream.push(i)
+            while (downstream.length > 0){
+                let peek = downstream[downstream.length-1]
+                if (A[peek] < A[i]){
+                    downstream.pop()
+                }else{
+                    upstream.pop()
+                    break
+                }
+            }
+        }else if (B[i] == 1){
+            downstream.push(i)
+        }
+    }
+
+    return upstream.length + downstream.length;
+}
+
+
+
+// triangle
+// 12:22
+// 1:14
+function solution(A) {
+    let answer = 0
+    let check = Array(A.length).fill(0)
+
+    function DFS(array){
+        if (array.length == 3){
+            array = array.sort((a, b) => a - b)
+            if (array[0] + array[1] > array[2]){
+                answer = 1
+            }
+            return
+        }
+
+        for (let i = 0; i < A.length; i++) {
+            if (!check[i]){
+                check[i] = 1
+                array.push(A[i])
+                DFS(array)
+                array = []
+                check[i] = 0
+            }
+        }
+    }
+
+    for (let i = 0; i < A.length; i++) {
+        if (!check[i]){
+            DFS([])
+        }
+
+        if (answer == 1) return 1
+    }
+
+    return answer
+}
+
+
+// 더 간단한 풀이
+// 테스트 케이스가 인티저 MAX 값까지 가기 때문에 살짝 예외처리 필요.
+// 첫번째수가 0보다 크고 다음수가 맥스값이면 마지막이 맥스값이여도 크다.
+function solution(A) {
+    A = A.sort((a, b) => a - b)
+    for (let i = 0; i < A.length - 2; i++) {
+        for (let j = i + 2; j < A.length; j++) {
+            if ((A[i] > 0 && A[i + 1] == Number.MAX_SAFE_INTEGER) || (A[i] + A[i+1] > A[j])){
+                return 1
+            }else{
+                break
+            }
+        }
+    }
+    return result
+}
 
 
 
 
+// 힙 구현 공부용
+// 디스크 컨트롤러
+function solution(jobs) {
+    const count = jobs.length;
+    const minHeap = new MinHeap();
+    jobs.sort((a,b) => a[0]-b[0]);
 
+    let time = 0;
+    let complete = 0;
+    let total = 0;
 
+    while(jobs.length || minHeap.size()) {
+        while(jobs.length) {
+            if(jobs[0][0] === time) {
+                minHeap.heappush(jobs.shift());
+            } else break;
+        }
+
+        if(minHeap.size() && time >= complete) {
+            const task = minHeap.heappop();
+            complete = task[1] + time;
+            total += complete - task[0];
+        }
+        time++;
+    }
+
+    return total / count >> 0;
+}
+
+class MinHeap {
+    constructor() {
+        this.heap = [ null ];
+    }
+
+    size() {
+        return this.heap.length - 1;
+    }
+
+    getMin() {
+        return this.heap[1] ? this.heap[1] : null;
+    }
+
+    swap(a, b) {
+        [ this.heap[a], this.heap[b] ] = [ this.heap[b], this.heap[a] ];
+    }
+
+    heappush(value) {
+        this.heap.push(value);
+        let curIdx = this.heap.length - 1;
+        let parIdx = (curIdx / 2) >> 0;
+
+        while(curIdx > 1 && this.heap[parIdx][1] > this.heap[curIdx][1]) {
+            this.swap(parIdx, curIdx)
+            curIdx = parIdx;
+            parIdx = (curIdx / 2) >> 0;
+        }
+    }
+
+    heappop() {
+        const min = this.heap[1];
+        if(this.heap.length <= 2) this.heap = [ null ];
+        else this.heap[1] = this.heap.pop();
+
+        let curIdx = 1;
+        let leftIdx = curIdx * 2;
+        let rightIdx = curIdx * 2 + 1;
+
+        if(!this.heap[leftIdx]) return min;
+        if(!this.heap[rightIdx]) {
+            if(this.heap[leftIdx][1] < this.heap[curIdx][1]) {
+                this.swap(leftIdx, curIdx);
+            }
+            return min;
+        }
+
+        while(this.heap[leftIdx][1] < this.heap[curIdx][1] || this.heap[rightIdx][1] < this.heap[curIdx][1]) {
+            const minIdx = this.heap[leftIdx][1] > this.heap[rightIdx][1] ? rightIdx : leftIdx;
+            this.swap(minIdx, curIdx);
+            curIdx = minIdx;
+            leftIdx = curIdx * 2;
+            rightIdx = curIdx * 2 + 1;
+
+            if(leftIdx >= this.size()) break;
+        }
+
+        return min;
+    }
+}
 
 
 
