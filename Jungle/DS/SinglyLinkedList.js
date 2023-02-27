@@ -78,6 +78,7 @@ class SinglyLinkedList {
             // 삭제 진행
             thisList.size--;
 
+            // head와 tail 업데이트
             if(thisList.size > 1) {
                 thisList.head = thisList.head.next;
             }else if(thisList.size == 1){
