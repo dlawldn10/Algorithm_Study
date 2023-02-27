@@ -126,6 +126,7 @@ class BinarySearchTree {
         return min;
     }
 
+    /* 트리를 전위순회하며 노드들의 값을 출력한다. */
     printInorder(){
         this.inorderRecur(this.root);
         console.log("");
